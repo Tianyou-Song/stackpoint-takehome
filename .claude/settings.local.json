@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where:*)",
+      "Bash(choco install:*)",
+      "Bash(where sudo:*)",
+      "Bash(sudo choco:*)",
+      "Read(//c/ProgramData/chocolatey/**)",
+      "Read(//c/ProgramData/chocolatey/bin/**)",
+      "Bash(winget search:*)",
+      "Bash(sudo winget:*)",
+      "Bash(cmd.exe:*)",
+      "Read(//c/Users/Kahs/AppData/**)",
+      "Read(//c/ProgramData/**)",
+      "Read(//c/Program Files/**)",
+      "Bash(export:*)",
+      "Bash(winget install:*)",
+      "Bash(winget show:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(POPPLER_BIN=\"/c/Users/Kahs/AppData/Local/Microsoft/WinGet/Packages/oschwartz10612.Poppler_Microsoft.Winget.Source_8wekyb3d8bbwe/poppler-25.07.0/Library/bin\")",
+      "Read(//c/Users/Kahs/Documents/code/stackpoint-takehome/**)",
+      "Bash(mkdir:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npm:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)",
+      "Read(//c/Users/Kahs/**)",
+      "Bash(printenv GOOGLE_API_KEY:*)"
+    ]
+  }
+}
