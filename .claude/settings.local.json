@@ -25,7 +25,19 @@
       "Bash(npx tsc:*)",
       "Bash(npx next:*)",
       "Read(//c/Users/Kahs/**)",
-      "Bash(printenv GOOGLE_API_KEY:*)"
+      "Bash(printenv GOOGLE_API_KEY:*)",
+      "Skill(keybindings-help)",
+      "Bash(ls:*)",
+      "Bash(node:*)",
+      "WebSearch",
+      "WebFetch(domain:selling-guide.fanniemae.com)",
+      "WebFetch(domain:getblueprint.io)",
+      "Bash(cp:*)",
+      "Bash(python:*)",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__puppeteer__puppeteer_evaluate",
+      "mcp__puppeteer__puppeteer_click"
     ]
   }
 }

@@ -38,12 +38,18 @@ class Store {
     this.initialized = true;
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     if (!fs.existsSync(path.join(DATA_DIR, "uploads"))) fs.mkdirSync(path.join(DATA_DIR, "uploads"), { recursive: true });
-    if (!fs.existsSync(path.join(DATA_DIR, "raw-text"))) fs.mkdirSync(path.join(DATA_DIR, "raw-text"), { recursive: true });
     if (fs.existsSync(STATE_FILE)) {
       try {
         const raw = fs.readFileSync(STATE_FILE, "utf-8");
         this.state = JSON.parse(raw);
         console.log(`[Store] Loaded state from disk: ${this.state.documents.length} docs`);
+        // Migrate: reset any stale parsing/parsed status from old pipeline
+        for (const doc of this.state.documents) {
+          if ((doc.status as string) === "parsing" || (doc.status as string) === "parsed") {
+            doc.status = "pending";
+          }
+          delete (doc as unknown as Record<string, unknown>).rawTextPath;
+        }
       } catch {
         this.state = emptyState();
       }
@@ -121,6 +127,14 @@ class Store {
   }
 }
 
-// Singleton
-const store = new Store();
+declare global {
+  var _store: Store | undefined;
+}
+
+if (!globalThis._store) {
+  console.log("[store] Creating new Store singleton");
+  globalThis._store = new Store();
+}
+
+const store = globalThis._store;
 export default store;

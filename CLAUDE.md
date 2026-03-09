@@ -10,7 +10,7 @@ Take-home assignment: build an unstructured data extraction system from mortgage
 
 **Deliverables:**
 - `README.md` — setup instructions + architecture decisions
-- `docs/SYSTEM_DESIGN.md` — architecture diagram, pipeline design, LLM strategy, scaling
+- `SYSTEM_DESIGN.md` — architecture diagram, pipeline design, LLM strategy, scaling
 - Working Next.js app (this repo)
 
 ## Tech Stack
@@ -18,8 +18,7 @@ Take-home assignment: build an unstructured data extraction system from mortgage
 | Concern | Choice |
 |---------|--------|
 | Framework | Next.js 15, App Router, TypeScript |
-| LLM | Gemini 3 Flash (preview) via `@google/generative-ai` |
-| PDF parsing | `pdfjs-dist` (v5, legacy build, Node.js) |
+| LLM | Gemini 3 Flash (preview) via `@google/generative-ai` — handles PDF parsing natively |
 | Real-time | Server-Sent Events (SSE) |
 | Storage | In-memory singleton + JSON file (`data/extraction-results.json`) |
 | UI | Tailwind CSS v4 + Radix UI primitives + Recharts |
@@ -31,7 +30,7 @@ app/
   api/upload/route.ts          # POST: accept PDFs, trigger pipeline async
   api/events/route.ts          # GET: SSE stream (real-time updates)
   api/documents/route.ts       # GET: all documents
-  api/documents/[id]/route.ts  # GET: detail + raw text; DELETE: remove + re-aggregate
+  api/documents/[id]/route.ts  # GET: detail + extraction; DELETE: remove + re-aggregate
   api/borrowers/route.ts       # GET: all borrowers
   api/borrowers/[id]/route.ts  # GET: borrower + income + accounts
   api/loan/route.ts            # GET: loan overview
@@ -40,7 +39,7 @@ app/
   borrowers/page.tsx           # Borrower list
   borrowers/[id]/page.tsx      # PII grid + income chart + accounts
   documents/page.tsx           # Document grid + delete buttons
-  documents/[id]/page.tsx      # Extracted fields table + raw text
+  documents/[id]/page.tsx      # Extracted fields table
   income/page.tsx              # Income chart + cross-doc reconciliation
   validation/page.tsx          # Validation findings
 
@@ -49,11 +48,10 @@ lib/
   store.ts                     # In-memory singleton + JSON read/write
   events.ts                    # SSE emitter singleton
   utils.ts                     # cn(), formatCurrency(), formatDate(), formatPercent()
-  pdf/parser.ts                # pdfjs-dist: extractTextFromPDF(), saveRawText(), readRawText()
   ai/client.ts                 # Gemini client (model: gemini-3-flash-preview)
   ai/schema.ts                 # Universal JSON schema for responseSchema
   ai/prompt.ts                 # Extraction system prompt
-  ai/extract.ts                # extractFromDocument(): text → DocumentExtraction
+  ai/extract.ts                # extractFromDocument(): filePath → DocumentExtraction (base64 PDF)
   pipeline/orchestrator.ts     # processDocument(), processBatch(), reaggregate(), deleteDocumentAndReaggregate()
   pipeline/assembler.ts        # assembleFromExtractions(): merge all docs → Loan/Borrower/Income/Account
   pipeline/validator.ts        # runValidation(): SSN mismatch, income discrepancy, entity mismatch
@@ -73,7 +71,6 @@ hooks/
 data/                          # Runtime, gitignored
   extraction-results.json      # Persisted system state
   uploads/                     # Saved PDF files
-  raw-text/                    # Per-document extracted text
 
 docs/
   SYSTEM_DESIGN.md             # Required deliverable
@@ -82,11 +79,11 @@ docs/
 ## Key Patterns
 
 **Pipeline flow (per document):**
-`pending → parsing → parsed → extracting → extracted → completed`
+`pending → extracting → extracted → completed`
 Each stage emits an SSE event. After a batch completes, `reaggregate()` runs assembler + validator and emits `state:updated` with the full new state.
 
 **Single-pass LLM extraction:**
-One universal `responseSchema` (all loan fields, all optional). Gemini fills what it finds and identifies the `documentType`. No separate classification step.
+One universal `responseSchema` (all loan fields, all optional). Gemini fills what it finds and identifies the `documentType`. No separate classification step. PDFs sent as base64 `inlineData` with `mimeType: "application/pdf"` — Gemini handles parsing natively, including tables, layout, and scanned docs.
 
 **Store pattern:**
 `store.ts` is a singleton. Call `store.init()` (idempotent) before use. All API routes read from and write to this store. SSE events carry full state slices — the browser merges them into React state.
@@ -112,8 +109,8 @@ One universal `responseSchema` (all loan fields, all optional). Gemini fills wha
 - Import in CSS: `@import "tailwindcss"`
 - PostCSS plugin: `@tailwindcss/postcss` (not `tailwindcss` directly)
 
-## pdfjs-dist v5 Notes
+## Gemini PDF Input Notes
 
-- Import from `pdfjs-dist/legacy/build/pdf.mjs` (not the default entry)
-- Set `GlobalWorkerOptions.workerSrc = ""` for Node.js (no worker thread)
-- TextItem check: `"str" in item` (not type casting) — items can be `TextItem | TextMarkedContent`
+- PDFs sent as base64 `inlineData` with `mimeType: "application/pdf"` in the `parts` array
+- No need for separate PDF parsing library — Gemini reads layout, tables, and scanned pages directly
+- `pageCount` is returned by Gemini as part of the `responseSchema` extraction

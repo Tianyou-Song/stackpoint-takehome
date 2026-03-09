@@ -1,12 +1,11 @@
 import fs from "fs";
-import path from "path";
 import type { LoanDocument } from "../types";
 import store from "../store";
 import emitter from "../events";
-import { extractTextFromPDF, saveRawText } from "../pdf/parser";
 import { extractFromDocument } from "../ai/extract";
 import { assembleFromExtractions } from "./assembler";
 import { runValidation } from "./validator";
+import { formatErrorMessage, buildDisplayName } from "../utils";
 
 function updateDocStatus(doc: LoanDocument, updates: Partial<LoanDocument>) {
   const updated = { ...doc, ...updates };
@@ -18,42 +17,39 @@ export async function processDocument(doc: LoanDocument): Promise<void> {
   let current = doc;
 
   try {
-    // 1. Parse
-    current = updateDocStatus(current, { status: "parsing" });
-    emitter.emit({ type: "document:parsing", documentId: doc.id, message: `Parsing ${doc.originalName}` });
-
-    const parsed = await extractTextFromPDF(doc.filePath);
-    const rawTextPath = saveRawText(doc.id, parsed.fullText);
-
-    current = updateDocStatus(current, {
-      status: "parsed",
-      pageCount: parsed.pageCount,
-      rawTextPath,
-    });
-    emitter.emit({ type: "document:parsed", documentId: doc.id, message: `Parsed ${parsed.pageCount} pages` });
-
-    // 2. Extract
+    // 1. Extract (send PDF directly to Gemini)
     current = updateDocStatus(current, { status: "extracting" });
     emitter.emit({ type: "document:extracting", documentId: doc.id, message: "Extracting with Gemini..." });
+    emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
 
-    const extraction = await extractFromDocument(doc.id, doc.originalName, parsed.fullText);
+    const extraction = await extractFromDocument(doc.id, doc.originalName, doc.filePath);
 
-    // Update doc type from extraction
+    // Update doc type, page count, and display name from extraction
+    const displayName = buildDisplayName(extraction.documentType, {
+      documentYears: extraction.documentYears,
+      primaryBorrowerName: extraction.primaryBorrowerName,
+      coBorrowerName: extraction.coBorrowerName,
+      documentTitle: extraction.documentTitle,
+    });
     current = updateDocStatus(current, {
       status: "extracted",
       documentType: extraction.documentType,
+      pageCount: extraction.pageCount ?? current.pageCount,
+      displayName,
     });
     store.upsertExtraction(extraction);
     emitter.emit({ type: "document:extracted", documentId: doc.id, message: `Extracted ${extraction.fields.length} fields` });
+    emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
 
-    // 3. Mark complete
+    // 2. Mark complete
     current = updateDocStatus(current, {
       status: "completed",
       processedAt: new Date().toISOString(),
     });
     emitter.emit({ type: "document:completed", documentId: doc.id });
+    emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
+    const errorMessage = formatErrorMessage(err);
     const stack = err instanceof Error ? err.stack : undefined;
     console.error(
       `[orchestrator] processDocument failed for ${doc.originalName} (id=${doc.id}):`,
@@ -62,6 +58,7 @@ export async function processDocument(doc: LoanDocument): Promise<void> {
     );
     updateDocStatus(current, { status: "error", errorMessage });
     emitter.emit({ type: "document:error", documentId: doc.id, message: errorMessage });
+    emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
     throw err;
   }
 }
@@ -79,6 +76,22 @@ export async function reaggregate(): Promise<void> {
     state.documents.find((d) => d.id === e.documentId && d.status === "completed")
   );
   const completedDocs = state.documents.filter((d) => d.status === "completed");
+
+  // Back-fill displayName for documents processed before this feature was added
+  for (const doc of completedDocs) {
+    if (!doc.displayName) {
+      const extraction = completedExtractions.find((e) => e.documentId === doc.id);
+      if (extraction) {
+        const displayName = buildDisplayName(extraction.documentType, {
+          documentYears: extraction.documentYears,
+          primaryBorrowerName: extraction.primaryBorrowerName,
+          coBorrowerName: extraction.coBorrowerName,
+          documentTitle: extraction.documentTitle,
+        });
+        store.upsertDocument({ ...doc, displayName });
+      }
+    }
+  }
 
   const { loan, borrowers, incomeRecords, accounts } = assembleFromExtractions(
     completedExtractions,
@@ -125,7 +138,6 @@ export async function deleteDocumentAndReaggregate(documentId: string): Promise<
   // Delete file
   try {
     if (fs.existsSync(doc.filePath)) fs.unlinkSync(doc.filePath);
-    if (doc.rawTextPath && fs.existsSync(doc.rawTextPath)) fs.unlinkSync(doc.rawTextPath);
   } catch (e) {
     console.error("Error deleting files:", e);
   }

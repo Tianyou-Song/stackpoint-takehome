@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { SSEEvent, LoanDocument } from "@/lib/types";
-import { CheckCircle2, XCircle, Loader2, Cpu, Clock, FileText, Trash2 } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Cpu, Clock, FileText, Trash2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -41,6 +41,7 @@ const TYPE_COLOR: Record<string, string> = {
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<LoanDocument[]>([]);
   const [deleting, setDeleting] = useState<Set<string>>(new Set());
+  const [retrying, setRetrying] = useState<Set<string>>(new Set());
 
   useSSE(
     useCallback((event: SSEEvent) => {
@@ -56,6 +57,12 @@ export default function DocumentsPage() {
     await fetch(`/api/documents/${id}`, { method: "DELETE" });
     // SSE will update the list
     setDeleting((prev) => { const s = new Set(prev); s.delete(id); return s; });
+  }
+
+  async function handleRetry(id: string) {
+    setRetrying((prev) => new Set(prev).add(id));
+    await fetch(`/api/documents/${id}`, { method: "POST" });
+    setRetrying((prev) => { const s = new Set(prev); s.delete(id); return s; });
   }
 
   return (
@@ -83,7 +90,10 @@ export default function DocumentsPage() {
                   <StatusIcon status={d.status} />
                   <div className="flex-1 min-w-0">
                     <Link href={`/documents/${d.id}`}>
-                      <p className="text-sm font-medium text-gray-900 truncate hover:text-blue-600">{d.originalName}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate hover:text-blue-600">{d.displayName || d.originalName}</p>
+                      {d.displayName && d.displayName !== d.originalName && (
+                        <p className="text-[10px] text-gray-400 truncate">{d.originalName}</p>
+                      )}
                     </Link>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${TYPE_COLOR[d.documentType] ?? "bg-gray-100 text-gray-600"}`}>
@@ -94,7 +104,22 @@ export default function DocumentsPage() {
                       )}
                     </div>
                     {d.errorMessage && (
-                      <p className="text-xs text-red-600 mt-1 truncate">{d.errorMessage}</p>
+                      <p className="text-xs text-red-600 mt-1">{d.errorMessage}</p>
+                    )}
+                    {d.status === "error" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2 h-7 text-xs gap-1.5"
+                        disabled={retrying.has(d.id)}
+                        onClick={() => handleRetry(d.id)}
+                      >
+                        {retrying.has(d.id)
+                          ? <Loader2 className="h-3 w-3 animate-spin" />
+                          : <RefreshCw className="h-3 w-3" />
+                        }
+                        Retry
+                      </Button>
                     )}
                   </div>
                   <Button

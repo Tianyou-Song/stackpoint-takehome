@@ -69,12 +69,18 @@ export default function ValidationPage() {
                           {f.field1Value && (
                             <div className="rounded bg-white/70 px-3 py-2 border border-white/50">
                               <p className="text-xs text-gray-500 mb-0.5 truncate">{f.field1DocName ?? f.field1Doc}</p>
+                              {f.field1FileName && (
+                                <p className="text-[10px] text-gray-400 truncate mb-0.5">{f.field1FileName}</p>
+                              )}
                               <p className="text-sm font-mono text-gray-900">{f.field1Value}</p>
                             </div>
                           )}
                           {f.field2Value && (
                             <div className="rounded bg-white/70 px-3 py-2 border border-white/50">
                               <p className="text-xs text-gray-500 mb-0.5 truncate">{f.field2DocName ?? f.field2Doc ?? "Expected"}</p>
+                              {f.field2FileName && (
+                                <p className="text-[10px] text-gray-400 truncate mb-0.5">{f.field2FileName}</p>
+                              )}
                               <p className="text-sm font-mono text-gray-900">{f.field2Value}</p>
                             </div>
                           )}

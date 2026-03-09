@@ -2,7 +2,7 @@
 // Core domain types for the Loan Document Extraction System
 // ============================================================
 
-export type DocumentStatus = "pending" | "parsing" | "parsed" | "extracting" | "extracted" | "completed" | "error";
+export type DocumentStatus = "pending" | "extracting" | "extracted" | "completed" | "error";
 export type DocumentType =
   | "tax_return_1040"
   | "w2"
@@ -16,7 +16,17 @@ export type DocumentType =
   | "other"
   | "unknown";
 export type BorrowerRole = "primary" | "co-borrower";
-export type IncomeSource = "w2_wages" | "self_employment" | "rental" | "other";
+export type IncomeSource =
+  | "base_salary"
+  | "overtime"
+  | "commission"
+  | "bonus"
+  | "self_employment"
+  | "rental"
+  | "other_income";
+export type IncomeRecordKind = "component" | "doc_total" | "underwriting_total";
+export type IncomePeriod = "annual" | "ytd" | "monthly";
+export type IncomeTrend = "increasing" | "stable" | "declining" | "insufficient_data";
 export type AccountType = "checking" | "savings" | "investment" | "other";
 export type ValidationSeverity = "error" | "warning" | "info";
 
@@ -33,6 +43,7 @@ export interface LoanDocument {
   id: string;
   fileName: string;
   originalName: string;
+  displayName?: string; // canonical display name (built deterministically from type + years + borrowers)
   documentType: DocumentType;
   pageCount: number;
   status: DocumentStatus;
@@ -40,7 +51,6 @@ export interface LoanDocument {
   uploadedAt: string; // ISO timestamp
   processedAt?: string;
   filePath: string; // absolute path to saved PDF
-  rawTextPath?: string; // path to extracted text file
 }
 
 // A borrower (primary or co-borrower)
@@ -62,6 +72,7 @@ export interface Borrower {
   hireDate?: string;
   annualSalary?: number;
   sources: SourceReference[]; // which docs confirmed this borrower exists
+  fieldSources?: Record<string, SourceReference>; // per-field provenance
 }
 
 export interface Address {
@@ -79,10 +90,16 @@ export interface IncomeRecord {
   borrowerName?: string;
   year: number;
   source: IncomeSource;
+  kind?: IncomeRecordKind;
+  period?: IncomePeriod;
+  periodEndDate?: string;
+  isJoint?: boolean;
+  annualizedAmount?: number;
   amount: number;
   description?: string;
   sourceDoc: string; // document ID
   sourceDocName: string;
+  sourceDocType?: DocumentType;
   sourcePages: number[];
   exactQuote?: string;
 }
@@ -136,9 +153,11 @@ export interface ValidationFinding {
   message: string;
   field1Doc?: string;
   field1DocName?: string;
+  field1FileName?: string;
   field1Value?: string;
   field2Doc?: string;
   field2DocName?: string;
+  field2FileName?: string;
   field2Value?: string;
 }
 
@@ -146,6 +165,9 @@ export interface ValidationFinding {
 export interface DocumentExtraction {
   documentId: string;
   documentType: DocumentType;
+  pageCount?: number;
+  documentTitle?: string;
+  documentYears?: number[]; // tax/calendar years this document covers
 
   // Borrower fields
   primaryBorrowerName?: string;
@@ -196,6 +218,10 @@ export interface ExtractedIncomeRecord {
   borrowerName?: string;
   year?: number;
   source?: IncomeSource;
+  kind?: IncomeRecordKind;
+  period?: IncomePeriod;
+  periodEndDate?: string;
+  isJoint?: boolean;
   amount?: number;
   description?: string;
   pageNumber?: number;
@@ -228,8 +254,6 @@ export interface SystemState {
 // SSE event types
 export type SSEEventType =
   | "document:pending"
-  | "document:parsing"
-  | "document:parsed"
   | "document:extracting"
   | "document:extracted"
   | "document:completed"

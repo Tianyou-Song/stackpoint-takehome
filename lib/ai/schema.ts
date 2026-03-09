@@ -6,6 +6,9 @@ export const EXTRACTION_SCHEMA = {
       type: "string",
       enum: ["tax_return_1040", "w2", "bank_statement", "pay_stub", "closing_disclosure", "underwriting_summary", "title_report", "evoe", "schedule_c", "other", "unknown"],
     },
+    pageCount: { type: "number", nullable: true },
+    documentTitle: { type: "string", nullable: true },
+    documentYears: { type: "array", nullable: true, items: { type: "number" } },
 
     // Primary borrower
     primaryBorrowerName: { type: "string", nullable: true },
@@ -42,9 +45,21 @@ export const EXTRACTION_SCHEMA = {
           year: { type: "number", nullable: true },
           source: {
             type: "string",
-            enum: ["w2_wages", "self_employment", "rental", "other"],
+            enum: ["base_salary", "overtime", "commission", "bonus", "self_employment", "rental", "other_income"],
             nullable: true,
           },
+          kind: {
+            type: "string",
+            enum: ["component", "doc_total", "underwriting_total"],
+            nullable: true,
+          },
+          period: {
+            type: "string",
+            enum: ["annual", "ytd", "monthly"],
+            nullable: true,
+          },
+          periodEndDate: { type: "string", nullable: true },
+          isJoint: { type: "boolean", nullable: true },
           amount: { type: "number", nullable: true },
           description: { type: "string", nullable: true },
           pageNumber: { type: "number", nullable: true },

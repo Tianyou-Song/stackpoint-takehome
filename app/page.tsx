@@ -12,8 +12,6 @@ import Link from "next/link";
 
 const STATUS_ICON: Record<string, React.ReactNode> = {
   pending: <Clock className="h-3 w-3 text-gray-400" />,
-  parsing: <Loader2 className="h-3 w-3 text-blue-500 animate-spin" />,
-  parsed: <Loader2 className="h-3 w-3 text-blue-500 animate-spin" />,
   extracting: <Cpu className="h-3 w-3 text-amber-500 animate-spin" style={{ animation: "spin 1.5s linear infinite" }} />,
   extracted: <Loader2 className="h-3 w-3 text-amber-500 animate-spin" />,
   completed: <CheckCircle2 className="h-3 w-3 text-green-500" />,
@@ -172,7 +170,12 @@ export default function DashboardPage() {
               {documents.map((d) => (
                 <div key={d.id} className="flex items-center gap-3 px-6 py-2.5">
                   {STATUS_ICON[d.status] ?? <FileText className="h-3 w-3 text-gray-400" />}
-                  <span className="flex-1 text-sm text-gray-700 truncate">{d.originalName}</span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm text-gray-700 truncate block">{d.displayName || d.originalName}</span>
+                    {d.status === "error" && d.errorMessage && (
+                      <span className="text-xs text-red-500 truncate block" title={d.errorMessage}>{d.errorMessage}</span>
+                    )}
+                  </div>
                   <DocTypeBadge type={d.documentType} />
                 </div>
               ))}
@@ -199,8 +202,6 @@ function StatCard({ label, value, sub, icon }: { label: string; value: number | 
 function DocProgressRow({ doc }: { doc: LoanDocument }) {
   const label: Record<string, string> = {
     pending: "Waiting",
-    parsing: "Parsing PDF...",
-    parsed: "Parsed",
     extracting: "Extracting with Gemini...",
     extracted: "Extracted",
     completed: "Done",
@@ -209,7 +210,7 @@ function DocProgressRow({ doc }: { doc: LoanDocument }) {
   return (
     <div className="flex items-center gap-3 text-sm">
       {STATUS_ICON[doc.status]}
-      <span className="flex-1 truncate text-gray-700">{doc.originalName}</span>
+      <span className="flex-1 truncate text-gray-700">{doc.displayName || doc.originalName}</span>
       <span className="text-xs text-gray-400">{label[doc.status]}</span>
     </div>
   );

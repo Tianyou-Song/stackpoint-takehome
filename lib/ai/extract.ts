@@ -1,3 +1,4 @@
+import fs from "fs";
 import { model } from "./client";
 import { EXTRACTION_SCHEMA } from "./schema";
 import { EXTRACTION_SYSTEM_PROMPT } from "./prompt";
@@ -6,6 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 
 interface RawExtraction {
   documentType: string;
+  pageCount?: number;
+  documentTitle?: string;
+  documentYears?: number[];
   primaryBorrowerName?: string;
   primaryBorrowerSSN?: string;
   primaryBorrowerDOB?: string;
@@ -67,23 +71,22 @@ interface RawExtraction {
 export async function extractFromDocument(
   documentId: string,
   documentName: string,
-  fullText: string
+  filePath: string
 ): Promise<DocumentExtraction> {
-  // Truncate text if too long (Gemini 3 Flash preview has ~1M token context but we stay conservative)
-  const truncatedText = fullText.length > 200000 ? fullText.slice(0, 200000) + "\n[... truncated]" : fullText;
+  const pdfBuffer = fs.readFileSync(filePath);
+  const base64 = pdfBuffer.toString("base64");
 
   const prompt = `${EXTRACTION_SYSTEM_PROMPT}
 
 Document: ${documentName}
 
----
-${truncatedText}
----
-
-Extract all information from this document and return JSON matching the schema.`;
+Extract all information from this PDF and return JSON matching the schema.`;
 
   const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    contents: [{ role: "user", parts: [
+      { inlineData: { mimeType: "application/pdf", data: base64 } },
+      { text: prompt }
+    ] }],
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: EXTRACTION_SCHEMA as Parameters<typeof model.generateContent>[0] extends { generationConfig?: { responseSchema?: infer S } } ? S : never,
@@ -116,6 +119,9 @@ Extract all information from this document and return JSON matching the schema.`
   const extraction: DocumentExtraction = {
     documentId,
     documentType: raw.documentType as DocumentExtraction["documentType"],
+    pageCount: raw.pageCount ?? undefined,
+    documentTitle: raw.documentTitle ?? undefined,
+    documentYears: raw.documentYears?.length ? raw.documentYears : undefined,
     primaryBorrowerName: raw.primaryBorrowerName ?? undefined,
     primaryBorrowerSSN: raw.primaryBorrowerSSN ?? undefined,
     primaryBorrowerDOB: raw.primaryBorrowerDOB ?? undefined,

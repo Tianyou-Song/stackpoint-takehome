@@ -11,13 +11,16 @@ class EventEmitter {
 
   addClient(client: Client) {
     this.clients.push(client);
+    console.log(`[emitter] Client added. Total: ${this.clients.length}`);
   }
 
   removeClient(id: string) {
     this.clients = this.clients.filter((c) => c.id !== id);
+    console.log(`[emitter] Client removed. Total: ${this.clients.length}`);
   }
 
   emit(event: SSEEvent) {
+    console.log(`[emitter] Emitting ${event.type} to ${this.clients.length} clients`);
     const data = `data: ${JSON.stringify(event)}\n\n`;
     for (const client of this.clients) {
       try {
@@ -38,5 +41,14 @@ class EventEmitter {
   }
 }
 
-const emitter = new EventEmitter();
+declare global {
+  var _sseEmitter: EventEmitter | undefined;
+}
+
+if (!globalThis._sseEmitter) {
+  console.log("[events] Creating new EventEmitter singleton");
+  globalThis._sseEmitter = new EventEmitter();
+}
+
+const emitter = globalThis._sseEmitter;
 export default emitter;

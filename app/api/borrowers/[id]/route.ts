@@ -15,9 +15,10 @@ export async function GET(
 
   const incomeRecords = state.incomeRecords.filter((r) => r.borrowerId === id);
   const accounts = state.accounts.filter((a) => a.borrowerId === id);
+  const borrowerDocIds = new Set(borrower.sources.map((s) => s.documentId));
   const fields = state.extractedFields.filter(
-    (f) => f.category === "borrower"
+    (f) => f.category === "borrower" && borrowerDocIds.has(f.documentId)
   );
 
-  return NextResponse.json({ borrower, incomeRecords, accounts, fields });
+  return NextResponse.json({ borrower, incomeRecords, accounts, fields, loan: state.loan });
 }

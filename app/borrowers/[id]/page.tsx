@@ -7,7 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SourceDrawer } from "@/components/provenance/source-drawer";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import type { Borrower, IncomeRecord, Account, SSEEvent, SystemState } from "@/lib/types";
+import type {
+  Borrower,
+  IncomeRecord,
+  Account,
+  Loan,
+  SSEEvent,
+  SystemState,
+  ExtractedField,
+  SourceReference,
+} from "@/lib/types";
+import { groupIncomeBySource, filterForQualifying, toCategory } from "@/lib/income";
+import { QualifyingIncomeSummary, IncomeBySourceSection } from "@/components/income/income-sections";
 import {
   AreaChart,
   Area,
@@ -24,6 +35,8 @@ interface BorrowerData {
   borrower: Borrower;
   incomeRecords: IncomeRecord[];
   accounts: Account[];
+  fields: ExtractedField[];
+  loan: Loan | null;
 }
 
 export default function BorrowerDetailPage() {
@@ -49,11 +62,16 @@ export default function BorrowerDetailPage() {
           const s = event.data as Partial<SystemState>;
           const borrower = s.borrowers?.find((b) => b.id === id);
           if (borrower) {
-            setData({
+            const borrowerDocIds = new Set(borrower.sources.map((src) => src.documentId));
+            setData((prev) => ({
               borrower,
               incomeRecords: s.incomeRecords?.filter((r) => r.borrowerId === id) ?? [],
               accounts: s.accounts?.filter((a) => a.borrowerId === id) ?? [],
-            });
+              fields: s.extractedFields?.filter(
+                (f) => f.category === "borrower" && borrowerDocIds.has(f.documentId)
+              ) ?? [],
+              loan: s.loan ?? prev?.loan ?? null,
+            }));
           }
         }
       },
@@ -73,18 +91,33 @@ export default function BorrowerDetailPage() {
     );
   }
 
-  const { borrower, incomeRecords, accounts } = data;
+  const { borrower, incomeRecords, accounts, fields, loan } = data;
 
-  // Build income chart data: group by year
-  const yearMap = new Map<number, { year: number; w2_wages: number; self_employment: number; rental: number; other: number }>();
-  for (const r of incomeRecords) {
+  // Build income chart data: group by year using qualifying categories
+  const { qualifying: qualifyingRecords, corroborating: corroboratingRecords } = filterForQualifying(incomeRecords);
+  const yearMap = new Map<number, { year: number; employment: number; self_employment: number; rental: number; other: number }>();
+  for (const r of qualifyingRecords) {
+    if (!r.year) continue;
     if (!yearMap.has(r.year)) {
-      yearMap.set(r.year, { year: r.year, w2_wages: 0, self_employment: 0, rental: 0, other: 0 });
+      yearMap.set(r.year, { year: r.year, employment: 0, self_employment: 0, rental: 0, other: 0 });
     }
     const entry = yearMap.get(r.year)!;
-    entry[r.source as keyof typeof entry] = (entry[r.source as keyof typeof entry] as number) + r.amount;
+    const cat = toCategory(r.source);
+    const annualValue = r.annualizedAmount ?? r.amount;
+    entry[cat] += annualValue;
   }
   const incomeChartData = Array.from(yearMap.values()).sort((a, b) => a.year - b.year);
+  const incomeBySource = groupIncomeBySource(qualifyingRecords, corroboratingRecords);
+
+  const getFieldSource = (fieldKey: string): SourceReference | undefined =>
+    borrower.fieldSources?.[fieldKey] ?? borrower.sources[0];
+
+  const getFieldConfidence = (...keywords: string[]): "high" | "medium" | "low" | undefined => {
+    const lower = keywords.map((k) => k.toLowerCase());
+    return fields.find((f) =>
+      lower.some((k) => f.fieldName.toLowerCase().includes(k))
+    )?.confidence;
+  };
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
@@ -101,40 +134,123 @@ export default function BorrowerDetailPage() {
         </div>
       </div>
 
-      {/* PII Grid */}
+      {/* Card 1: Personal Information */}
       <Card>
         <CardHeader><CardTitle>Personal Information</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <PIIField label="SSN" value={borrower.ssn} source={borrower.sources[0]} />
-            <PIIField label="Date of Birth" value={borrower.dateOfBirth} source={borrower.sources[0]} />
-            <PIIField label="Phone" value={borrower.phone} source={borrower.sources[0]} />
-            <PIIField label="Email" value={borrower.email} source={borrower.sources[0]} />
-            <PIIField label="Employer" value={borrower.employer} source={borrower.sources[0]} />
-            <PIIField label="Job Title" value={borrower.jobTitle} source={borrower.sources[0]} />
-            <PIIField label="Hire Date" value={borrower.hireDate} source={borrower.sources[0]} />
-            <PIIField label="Annual Salary" value={formatCurrency(borrower.annualSalary)} source={borrower.sources[0]} />
+            <PIIField
+              label="SSN"
+              value={borrower.ssn}
+              source={getFieldSource("ssn")}
+              confidence={getFieldConfidence("ssn", "social security")}
+            />
+            <PIIField
+              label="Date of Birth"
+              value={borrower.dateOfBirth}
+              source={getFieldSource("dateOfBirth")}
+              confidence={getFieldConfidence("date of birth", "dob", "birth")}
+            />
+            <PIIField
+              label="Phone"
+              value={borrower.phone}
+              source={getFieldSource("phone")}
+              confidence={getFieldConfidence("phone")}
+            />
+            <PIIField
+              label="Email"
+              value={borrower.email}
+              source={getFieldSource("email")}
+              confidence={getFieldConfidence("email")}
+            />
           </div>
-          {borrower.currentAddress?.full && (
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <div className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 text-gray-400 mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-gray-500 mb-0.5">Current Address</p>
-                  <p className="text-sm text-gray-900">{borrower.currentAddress.full}</p>
-                </div>
-                {borrower.sources[0] && (
-                  <SourceDrawer source={borrower.sources[0]} trigger={
-                    <button className="ml-auto text-blue-500 hover:text-blue-700">
-                      <ExternalLink className="h-3 w-3" />
-                    </button>
-                  } />
-                )}
-              </div>
+          {(borrower.currentAddress?.full || borrower.previousAddress?.full) && (
+            <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+              {borrower.currentAddress?.full && (
+                <AddressRow
+                  label="Current Address"
+                  address={borrower.currentAddress.full}
+                  source={getFieldSource("currentAddress")}
+                />
+              )}
+              {borrower.previousAddress?.full && (
+                <AddressRow
+                  label="Previous Address"
+                  address={borrower.previousAddress.full}
+                  source={borrower.sources[0]}
+                />
+              )}
             </div>
           )}
         </CardContent>
       </Card>
+
+      {/* Card 2: Employment */}
+      {(borrower.employer || borrower.jobTitle || borrower.hireDate || borrower.annualSalary != null) && (
+        <Card>
+          <CardHeader><CardTitle>Employment</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <PIIField
+                label="Employer"
+                value={borrower.employer}
+                source={getFieldSource("employer")}
+                confidence={getFieldConfidence("employer")}
+              />
+              <PIIField
+                label="Job Title"
+                value={borrower.jobTitle}
+                source={getFieldSource("jobTitle")}
+                confidence={getFieldConfidence("job title", "position", "occupation")}
+              />
+              <PIIField
+                label="Hire Date"
+                value={borrower.hireDate}
+                source={getFieldSource("hireDate")}
+                confidence={getFieldConfidence("hire date", "start date")}
+              />
+              <PIIField
+                label="Annual Salary"
+                value={formatCurrency(borrower.annualSalary)}
+                source={getFieldSource("annualSalary")}
+                confidence={getFieldConfidence("salary", "annual")}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Card 3: Loan Information */}
+      {loan && (loan.loanNumber || loan.loanAmount || loan.interestRate || loan.loanType) && (
+        <Card>
+          <CardHeader><CardTitle>Loan Information</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <LoanField label="Loan Number" value={loan.loanNumber} />
+              <LoanField label="Loan Amount" value={formatCurrency(loan.loanAmount)} />
+              <LoanField label="Interest Rate" value={loan.interestRate != null ? `${loan.interestRate}%` : undefined} />
+              <LoanField label="Loan Type" value={loan.loanType} />
+              <LoanField label="Purpose" value={loan.loanPurpose} />
+              <LoanField label="Loan Term" value={loan.loanTerm != null ? `${loan.loanTerm} years` : undefined} />
+              <LoanField label="Lender" value={loan.lenderName} />
+              <LoanField label="Closing Date" value={loan.closingDate ? formatDate(loan.closingDate) : undefined} />
+              <LoanField label="Sale Price" value={formatCurrency(loan.salePrice)} />
+            </div>
+            {loan.propertyAddress?.full && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <AddressRow
+                  label="Property Address"
+                  address={loan.propertyAddress.full}
+                  source={loan.sources[0]}
+                />
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Qualifying Income Summary */}
+      {incomeRecords.length > 0 && <QualifyingIncomeSummary groups={incomeBySource} />}
 
       {/* Income Chart */}
       {incomeChartData.length > 0 && (
@@ -148,7 +264,7 @@ export default function BorrowerDetailPage() {
                 <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(v) => formatCurrency(v as number)} />
                 <Legend />
-                <Area type="monotone" dataKey="w2_wages" stackId="1" stroke="#3b82f6" fill="#bfdbfe" name="W-2 Wages" />
+                <Area type="monotone" dataKey="employment" stackId="1" stroke="#3b82f6" fill="#bfdbfe" name="Employment" />
                 <Area type="monotone" dataKey="self_employment" stackId="1" stroke="#8b5cf6" fill="#ddd6fe" name="Self-Employment" />
                 <Area type="monotone" dataKey="rental" stackId="1" stroke="#10b981" fill="#a7f3d0" name="Rental" />
                 <Area type="monotone" dataKey="other" stackId="1" stroke="#f59e0b" fill="#fde68a" name="Other" />
@@ -158,41 +274,13 @@ export default function BorrowerDetailPage() {
         </Card>
       )}
 
-      {/* Income Table */}
-      {incomeRecords.length > 0 && (
-        <Card>
-          <CardHeader><CardTitle>Income Records</CardTitle></CardHeader>
-          <CardContent className="p-0">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Year</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Source</th>
-                  <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Amount</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Document</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {incomeRecords.sort((a, b) => b.year - a.year).map((r) => (
-                  <tr key={r.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-3 text-gray-900">{r.year || "—"}</td>
-                    <td className="px-6 py-3">
-                      <Badge variant="secondary" className="capitalize">{r.source.replace("_", " ")}</Badge>
-                    </td>
-                    <td className="px-6 py-3 text-right font-medium text-gray-900">{formatCurrency(r.amount)}</td>
-                    <td className="px-6 py-3 text-gray-500 text-xs truncate max-w-[200px]">{r.sourceDocName}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-        </Card>
-      )}
+      {/* Income by Source */}
+      {incomeRecords.length > 0 && <IncomeBySourceSection groups={incomeBySource} />}
 
-      {/* Accounts */}
+      {/* Assets */}
       {accounts.length > 0 && (
         <Card>
-          <CardHeader><CardTitle>Bank Accounts</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Assets</CardTitle></CardHeader>
           <CardContent>
             <div className="grid sm:grid-cols-2 gap-3">
               {accounts.map((a) => (
@@ -236,12 +324,37 @@ export default function BorrowerDetailPage() {
   );
 }
 
-function PIIField({ label, value, source }: { label: string; value?: string | null; source?: import("@/lib/types").SourceReference }) {
+// ─── Borrower-specific sub-components ────────────────────────────────────────
+
+function ConfidenceDot({ confidence }: { confidence?: "high" | "medium" | "low" }) {
+  if (!confidence) return null;
+  const colors = { high: "bg-green-500", medium: "bg-yellow-400", low: "bg-red-500" };
+  const labels = { high: "High confidence", medium: "Medium confidence", low: "Low confidence" };
+  return (
+    <span
+      className={`inline-block w-2 h-2 rounded-full shrink-0 ${colors[confidence]}`}
+      title={labels[confidence]}
+    />
+  );
+}
+
+function PIIField({
+  label,
+  value,
+  source,
+  confidence,
+}: {
+  label: string;
+  value?: string | null;
+  source?: SourceReference;
+  confidence?: "high" | "medium" | "low";
+}) {
   if (!value) return null;
   return (
     <div>
       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-0.5">{label}</p>
       <div className="flex items-center gap-1.5">
+        <ConfidenceDot confidence={confidence} />
         <p className="text-sm text-gray-900">{value}</p>
         {source && (
           <SourceDrawer source={source} trigger={
@@ -251,6 +364,35 @@ function PIIField({ label, value, source }: { label: string; value?: string | nu
           } />
         )}
       </div>
+    </div>
+  );
+}
+
+function LoanField({ label, value }: { label: string; value?: string | null }) {
+  if (!value) return null;
+  return (
+    <div>
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-0.5">{label}</p>
+      <p className="text-sm text-gray-900">{value}</p>
+    </div>
+  );
+}
+
+function AddressRow({ label, address, source }: { label: string; address: string; source?: SourceReference }) {
+  return (
+    <div className="flex items-start gap-2">
+      <MapPin className="h-4 w-4 text-gray-400 mt-0.5 shrink-0" />
+      <div>
+        <p className="text-xs text-gray-500 mb-0.5">{label}</p>
+        <p className="text-sm text-gray-900">{address}</p>
+      </div>
+      {source && (
+        <SourceDrawer source={source} trigger={
+          <button className="ml-auto text-blue-500 hover:text-blue-700">
+            <ExternalLink className="h-3 w-3" />
+          </button>
+        } />
+      )}
     </div>
   );
 }

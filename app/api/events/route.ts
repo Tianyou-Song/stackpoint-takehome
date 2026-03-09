@@ -13,6 +13,7 @@ export async function GET(_req: NextRequest) {
   const stream = new ReadableStream({
     start(controller) {
       emitter.addClient({ id: clientId, controller, encoder });
+      console.log(`[SSE] emitter client count at emit time: ${emitter.clientCount()}`);
 
       // Send initial ping
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "ping" })}\n\n`));
