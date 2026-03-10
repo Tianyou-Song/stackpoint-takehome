@@ -10,19 +10,26 @@ import { formatErrorMessage, buildDisplayName } from "../utils";
 function updateDocStatus(doc: LoanDocument, updates: Partial<LoanDocument>) {
   const updated = { ...doc, ...updates };
   store.upsertDocument(updated);
+  if (updates.status) {
+    console.log(`[orchestrator] Status: ${doc.originalName} → ${updates.status}`);
+  }
   return updated;
 }
 
 export async function processDocument(doc: LoanDocument): Promise<void> {
   let current = doc;
+  const t0 = Date.now();
+  console.log(`[orchestrator] processDocument START: ${doc.originalName} (id=${doc.id})`);
 
   try {
     // 1. Extract (send PDF directly to Gemini)
     current = updateDocStatus(current, { status: "extracting" });
-    emitter.emit({ type: "document:extracting", documentId: doc.id, message: "Extracting with Gemini..." });
+    emitter.emit({ type: "document:extracting", documentId: doc.id, message: "Extracting..." });
     emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
 
+    console.log(`[orchestrator] → extractFromDocument START: ${doc.originalName} at +${Date.now() - t0}ms`);
     const extraction = await extractFromDocument(doc.id, doc.originalName, doc.filePath);
+    console.log(`[orchestrator] ← extractFromDocument DONE: ${doc.originalName} in ${Date.now() - t0}ms`);
 
     // Update doc type, page count, and display name from extraction
     const displayName = buildDisplayName(extraction.documentType, {
@@ -48,6 +55,7 @@ export async function processDocument(doc: LoanDocument): Promise<void> {
     });
     emitter.emit({ type: "document:completed", documentId: doc.id });
     emitter.emitStateUpdate({ documents: store.getDocuments() }, doc.id);
+    console.log(`[orchestrator] processDocument DONE: ${doc.originalName} total=${Date.now() - t0}ms`);
   } catch (err) {
     const errorMessage = formatErrorMessage(err);
     const stack = err instanceof Error ? err.stack : undefined;
@@ -64,18 +72,22 @@ export async function processDocument(doc: LoanDocument): Promise<void> {
 }
 
 export async function processBatch(docs: LoanDocument[]): Promise<void> {
+  console.log(`[orchestrator] processBatch START: [${docs.map((d) => d.originalName).join(", ")}]`);
   // Process all docs in parallel
   await Promise.allSettled(docs.map((doc) => processDocument(doc)));
+  console.log(`[orchestrator] processBatch DONE`);
   // Re-aggregate after all are done
   await reaggregate();
 }
 
 export async function reaggregate(): Promise<void> {
+  const t0 = Date.now();
   const state = store.getState();
   const completedExtractions = state.extractions.filter((e) =>
     state.documents.find((d) => d.id === e.documentId && d.status === "completed")
   );
   const completedDocs = state.documents.filter((d) => d.status === "completed");
+  console.log(`[orchestrator] reaggregate START (${completedExtractions.length} completed extractions)`);
 
   // Back-fill displayName for documents processed before this feature was added
   for (const doc of completedDocs) {
@@ -93,6 +105,7 @@ export async function reaggregate(): Promise<void> {
     }
   }
 
+  console.log(`[orchestrator] reaggregate → assembleFromExtractions`);
   const { loan, borrowers, incomeRecords, accounts } = assembleFromExtractions(
     completedExtractions,
     completedDocs
@@ -100,6 +113,7 @@ export async function reaggregate(): Promise<void> {
 
   const allExtractedFields = completedExtractions.flatMap((e) => e.fields);
 
+  console.log(`[orchestrator] reaggregate → runValidation (${loan ? "loan present" : "no loan"}, ${borrowers.length} borrowers)`);
   const validationFindings = runValidation(
     completedExtractions,
     borrowers,
@@ -107,6 +121,7 @@ export async function reaggregate(): Promise<void> {
     completedDocs
   );
 
+  console.log(`[orchestrator] reaggregate → setAggregated (${validationFindings.length} validation findings)`);
   store.setAggregated({
     loan,
     borrowers,
@@ -116,9 +131,11 @@ export async function reaggregate(): Promise<void> {
     validationFindings,
   });
 
+  console.log(`[orchestrator] reaggregate → persist`);
   store.persist();
 
   // Emit full state update
+  console.log(`[orchestrator] reaggregate → emitStateUpdate`);
   const newState = store.getState();
   emitter.emitStateUpdate({
     loan: newState.loan,
@@ -129,11 +146,14 @@ export async function reaggregate(): Promise<void> {
     validationFindings: newState.validationFindings,
     extractedFields: newState.extractedFields,
   });
+  console.log(`[orchestrator] reaggregate DONE in ${Date.now() - t0}ms`);
 }
 
 export async function deleteDocumentAndReaggregate(documentId: string): Promise<void> {
+  const t0 = Date.now();
   const doc = store.getDocument(documentId);
   if (!doc) return;
+  console.log(`[orchestrator] deleteDocument START: ${documentId} (${doc.originalName})`);
 
   // Delete file
   try {
@@ -142,8 +162,11 @@ export async function deleteDocumentAndReaggregate(documentId: string): Promise<
     console.error("Error deleting files:", e);
   }
 
+  console.log(`[orchestrator] deleteDocument → store.deleteDocument`);
   store.deleteDocument(documentId);
   emitter.emit({ type: "document:deleted", documentId });
 
+  console.log(`[orchestrator] deleteDocument → reaggregate`);
   await reaggregate();
+  console.log(`[orchestrator] deleteDocument DONE in ${Date.now() - t0}ms`);
 }

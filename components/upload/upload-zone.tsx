@@ -23,19 +23,22 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
       if (pdfs.length === 0) return;
 
       setFiles(pdfs.map((f) => ({ name: f.name, status: "uploading" })));
+      console.log(`[upload] Uploading ${pdfs.length} file(s):`, pdfs.map((f) => `${f.name} (${Math.round(f.size / 1024)}KB)`));
 
       const form = new FormData();
       pdfs.forEach((f) => form.append("files", f));
 
       try {
         const res = await fetch("/api/upload", { method: "POST", body: form });
+        console.log(`[upload] Response: ${res.status} ${res.statusText}`);
         if (!res.ok) throw new Error("Upload failed");
         const data = await res.json();
         setFiles(pdfs.map((f) => ({ name: f.name, status: "processing" })));
         onUploaded?.(data.documents?.map((d: { id: string }) => d.id) ?? []);
         // Clear after a bit
         setTimeout(() => setFiles([]), 8000);
-      } catch {
+      } catch (err) {
+        console.error("[upload] Upload failed:", err);
         setFiles(pdfs.map((f) => ({ name: f.name, status: "error" })));
       }
     },

@@ -59,7 +59,9 @@ class Store {
   persist() {
     this.state.lastUpdated = new Date().toISOString();
     try {
-      fs.writeFileSync(STATE_FILE, JSON.stringify(this.state, null, 2));
+      const json = JSON.stringify(this.state, null, 2);
+      fs.writeFileSync(STATE_FILE, json);
+      console.log(`[store] persisted state (${this.state.documents.length} docs, ${json.length} bytes)`);
     } catch (e) {
       console.error("Failed to persist state:", e);
     }
@@ -84,12 +86,18 @@ class Store {
   upsertDocument(doc: LoanDocument) {
     this.init();
     const idx = this.state.documents.findIndex((d) => d.id === doc.id);
-    if (idx >= 0) this.state.documents[idx] = doc;
-    else this.state.documents.push(doc);
+    if (idx >= 0) {
+      this.state.documents[idx] = doc;
+    } else {
+      this.state.documents.push(doc);
+    }
   }
 
   deleteDocument(id: string) {
     this.init();
+    const deletedExtractions = this.state.extractions.filter((e) => e.documentId === id).length;
+    const deletedFields = this.state.extractedFields.filter((f) => f.documentId === id).length;
+    console.log(`[store] delete: ${id} — removing doc + ${deletedExtractions} extractions, ${deletedFields} fields`);
     this.state.documents = this.state.documents.filter((d) => d.id !== id);
     this.state.extractions = this.state.extractions.filter((e) => e.documentId !== id);
     this.state.extractedFields = this.state.extractedFields.filter((f) => f.documentId !== id);
@@ -118,6 +126,7 @@ class Store {
     validationFindings: ValidationFinding[];
   }) {
     this.init();
+    console.log(`[store] setAggregated: loan=${!!data.loan}, borrowers=${data.borrowers.length}, income=${data.incomeRecords.length}, accounts=${data.accounts.length}, findings=${data.validationFindings.length}`);
     this.state.loan = data.loan;
     this.state.borrowers = data.borrowers;
     this.state.incomeRecords = data.incomeRecords;

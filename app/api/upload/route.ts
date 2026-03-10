@@ -29,6 +29,8 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
+      console.log(`[upload] Accepting file: ${file.name} (${Math.round(file.size / 1024)} KB)`);
+
       const id = uuidv4();
       const safeFileName = `${id}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
       const filePath = path.join(uploadsDir, safeFileName);
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest) {
       // Save file
       const buffer = Buffer.from(await file.arrayBuffer());
       fs.writeFileSync(filePath, buffer);
+      console.log(`[upload] Saved ${file.name} → ${filePath}`);
 
       const doc: LoanDocument = {
         id,
@@ -50,6 +53,7 @@ export async function POST(req: NextRequest) {
 
       store.upsertDocument(doc);
       docs.push(doc);
+      console.log(`[upload] Doc queued: ${doc.id} (${doc.originalName})`);
 
       emitter.emit({ type: "document:pending", documentId: id, message: `Uploaded ${file.name}` });
     }
@@ -58,6 +62,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No valid PDF files found" }, { status: 400 });
     }
 
+    console.log(`[upload] Starting processBatch for ${docs.length} doc(s): [${docs.map((d) => d.id).join(", ")}]`);
     // Process asynchronously (don't await — return immediately so client gets SSE updates)
     processBatch(docs).catch((e) => console.error("Batch processing error:", e));
 

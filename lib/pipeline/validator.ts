@@ -14,6 +14,7 @@ export function runValidation(
   incomeRecords: IncomeRecord[],
   documents: LoanDocument[]
 ): ValidationFinding[] {
+  console.log(`[validator] START: ${borrowers.length} borrowers, ${extractions.length} extractions`);
   const findings: ValidationFinding[] = [];
   const docMap = new Map(documents.map((d) => [d.id, d]));
 
@@ -31,6 +32,7 @@ export function runValidation(
         const nameLower = (extraction.primaryBorrowerName ?? "").toLowerCase();
         const borrowerLower = (borrower.fullName ?? "").toLowerCase();
         if (borrowerLower.includes(nameLower.split(" ")[0]) || nameLower.includes(borrowerLower.split(" ")[0])) {
+          console.log(`[validator] SSN sighting: ${borrower.fullName} = ${maskSSN(normalize(extraction.primaryBorrowerSSN))} (from ${extraction.documentType})`);
           ssnSightings.push({
             ssn: normalize(extraction.primaryBorrowerSSN),
             docId: extraction.documentId,
@@ -44,6 +46,7 @@ export function runValidation(
         const nameLower = (extraction.coBorrowerName ?? "").toLowerCase();
         const borrowerLower = (borrower.fullName ?? "").toLowerCase();
         if (borrowerLower.includes(nameLower.split(" ")[0]) || nameLower.includes(borrowerLower.split(" ")[0])) {
+          console.log(`[validator] SSN sighting: ${borrower.fullName} = ${maskSSN(normalize(extraction.coBorrowerSSN))} (from ${extraction.documentType})`);
           ssnSightings.push({
             ssn: normalize(extraction.coBorrowerSSN),
             docId: extraction.documentId,
@@ -60,6 +63,7 @@ export function runValidation(
         const a = ssnSightings[i];
         const b = ssnSightings[j];
         if (ssnCompatible(a.ssn, b.ssn)) continue;
+        console.log(`[validator] SSN MISMATCH: ${borrower.fullName} — ${maskSSN(a.ssn)} vs ${maskSSN(b.ssn)}`);
         findings.push({
           id: uuidv4(),
           severity: "error",
@@ -98,7 +102,10 @@ export function runValidation(
     const evoer = evoeTotalsByKey.get(key);
     if (!evoer) continue;
     const diff = Math.abs(w2r.amount - evoer.amount) / Math.min(w2r.amount, evoer.amount);
+    const pct = Math.round(diff * 100);
+    console.log(`[validator] Income check: ${w2r.borrowerName ?? "borrower"} W2=$${w2r.amount} EVOE=$${evoer.amount} diff=${pct}%`);
     if (diff > 0.10) {
+      console.log(`[validator] Income DISCREPANCY: ${w2r.borrowerName ?? "borrower"} diff=${pct}% (threshold=10%)`);
       findings.push({
         id: uuidv4(),
         severity: "warning",
@@ -221,7 +228,9 @@ export function runValidation(
       (n) => n.includes(titleNameNorm.split(" ")[0]) || titleNameNorm.includes(n.split(" ")[0])
     );
 
+    console.log(`[validator] Entity check: title parties=[${titleBorrowerName}] vs borrowers=[${nonTitleBorrowers.map((b) => b.fullName).join(", ")}]`);
     if (!matches) {
+      console.log(`[validator] Entity MISMATCH: title report references different parties`);
       findings.push({
         id: uuidv4(),
         severity: "warning",
@@ -236,6 +245,9 @@ export function runValidation(
     }
   }
 
+  const errors = findings.filter((f) => f.severity === "error").length;
+  const warnings = findings.filter((f) => f.severity === "warning").length;
+  console.log(`[validator] DONE — ${findings.length} findings (${errors} errors, ${warnings} warnings)`);
   return findings;
 }
 

@@ -5,8 +5,20 @@ An unstructured data extraction system for mortgage loan documents. Upload PDFs 
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- A Google Gemini API key ([get one free](https://aistudio.google.com/app/apikey))
+- Node.js 20+
+- An OpenRouter API key
+
+#### PDF Parsing (Poppler)
+
+This project uses [node-poppler](https://www.npmjs.com/package/node-poppler) for PDF text extraction.
+
+- **Windows**: Poppler binaries are bundled automatically via npm (no extra setup)
+- **macOS**: `brew install poppler`
+- **Linux (Ubuntu/Debian)**: `sudo apt-get install -y poppler-utils`
+- **Docker**: Add to your Dockerfile:
+  ```dockerfile
+  RUN apt-get update && apt-get install -y poppler-utils && rm -rf /var/lib/apt/lists/*
+  ```
 
 ### Setup
 
@@ -39,7 +51,7 @@ See [`SYSTEM_DESIGN.md`](SYSTEM_DESIGN.md) for the full system design document.
 
 ```
 Upload PDFs → Save to data/uploads/
-           → Gemini API: direct PDF extraction (base64 inlineData) with universal JSON schema
+           → OpenRouter → Gemini: text extraction via Poppler (base64 fallback for scanned PDFs) with universal JSON schema
            → Assembler: merge all documents into Borrower/Loan/Income/Account objects
            → Validator: cross-document SSN and income consistency checks
            → SSE: push updated state to all connected browsers
@@ -51,7 +63,7 @@ Upload PDFs → Save to data/uploads/
 | Concern | Choice | Reason |
 |---------|--------|--------|
 | Framework | Next.js 15 (App Router) | Single repo ships both the React UI and REST/SSE API routes — the fastest way to produce an interactive demo with no separate backend service. App Router file-based routing, React Server Components for fast initial loads, and `npm run dev` brings up everything at once. |
-| LLM | Gemini 3 Flash (preview) | Top ExtractBench score, native PDF input (base64 inlineData), structured JSON via `responseSchema` |
+| LLM | Gemini 3 Flash (preview) via OpenRouter | Top ExtractBench score, structured JSON via `responseSchema`; text extracted via Poppler (base64 fallback for scanned PDFs) |
 | Real-time | Server-Sent Events | One-way push, no WebSocket overhead |
 | Storage | In-memory + JSON file | Zero-config for a POC; trivially swappable for Postgres |
 | UI | Tailwind CSS + Radix UI | Polished without heavy component library |
@@ -105,13 +117,15 @@ Test coverage was intentionally deferred at this POC stage. Industry practice fo
 - **Mary's SSN**: `500-22-2000` on the 1040 vs `500-60-2222` on the underwriting summary — flagged as SSN mismatch error
 - **Income sources**: John has W-2 wages + Schedule C self-employment income across multiple tax years
 
-## API Key Tier & Availability
+## API Provider — OpenRouter
 
-The `GOOGLE_API_KEY` obtained for free from [AI Studio](https://aistudio.google.com/app/apikey) runs on shared, best-effort infrastructure. During traffic spikes, Gemini returns `503 Service Unavailable` — _"This model is currently experiencing high demand. Spikes in demand are usually temporary."_ This is **not** a per-caller rate limit; it reflects capacity contention on Google's shared infrastructure. No tier within Google AI Studio — free or paid — guarantees uninterrupted access during peak usage.
+This system routes Gemini calls through [OpenRouter](https://openrouter.ai) rather than calling Google AI Studio directly. The `OPENROUTER_API_KEY` in `.env.local` is an OpenRouter key.
 
-**Impact on this demo**: Batch-uploading all 10 PDFs simultaneously is likely to trigger 503s on a free key. Use the **Retry** button on failed documents, or upload in smaller batches and wait a few minutes between batches.
+**Why not Google AI Studio directly?** Google AI Studio's shared infrastructure — including the paid Tier 1 tier — returns `503 Service Unavailable` during traffic spikes, even when the caller is nowhere near the stated rate limit. Batch-uploading 10 PDFs would routinely fail 3–5 documents with 503s unrelated to quota. OpenRouter routes through dedicated provider capacity and behaves reliably under the same load.
 
-**For production**: Use [Vertex AI](https://cloud.google.com/vertex-ai) with [Provisioned Throughput](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput) instead of an AI Studio key. Provisioned Throughput allocates dedicated model capacity (measured in gen units/sec) to your project, removing contention with other callers and providing a capacity SLA. See the rate-limiting section of [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md) for the recommended queue-based retry architecture.
+**PDF parsing tradeoff**: OpenRouter does not faithfully forward Gemini's native `inlineData` PDF parts, which are the mechanism Gemini uses to read PDF layout and tables directly. To work around this, the system uses `node-poppler` to extract text from PDFs before calling the model. For scanned PDFs (extracted text < 50 characters), the raw PDF bytes are sent as a base64 `data:application/pdf;base64,{…}` image part as a fallback. See `lib/ai/extract.ts` for the implementation.
+
+**For production**: Migrate to [Vertex AI](https://cloud.google.com/vertex-ai) with [Provisioned Throughput](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput) — dedicated model capacity, availability SLA, restores native PDF input (removing the Poppler workaround), and eliminates the OpenRouter dependency. See [SYSTEM_DESIGN.md §12.12](./SYSTEM_DESIGN.md) for the full provider comparison.
 
 ## Future Directions
 

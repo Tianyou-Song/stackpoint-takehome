@@ -1,0 +1,2549 @@
+{
+  "loan": {
+    "sources": [
+      {
+        "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+        "documentName": "Underwriting Summary (2026) — John & Mary Homeowner",
+        "pageNumber": 1,
+        "exactQuote": ""
+      }
+    ],
+    "loanNumber": "TEST250700114",
+    "loanAmount": 280000,
+    "loanType": "Conventional",
+    "loanPurpose": "Purchase",
+    "propertyAddress": {
+      "full": "214 Overlook Drive, Brentwood, TN 37027"
+    },
+    "salePrice": 350000,
+    "closingDate": "2025-07-25",
+    "interestRate": 4,
+    "loanTerm": 30,
+    "lenderName": "XYZ Mortgage Company"
+  },
+  "borrowers": [
+    {
+      "id": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "role": "primary",
+      "fullName": "John Homeowner",
+      "sources": [
+        {
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "documentName": "Letter of Explanation (LOE) (2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+          "documentName": "Pay Stub (2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "documentName": "W-2 (2024) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "documentName": "Underwriting Summary (2026) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "documentName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "documentName": "EVOE (2023, 2024, 2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "documentName": "Closing Disclosure — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        }
+      ],
+      "currentAddress": {
+        "full": "175 13th Street Washington, DC 20013"
+      },
+      "fieldSources": {
+        "currentAddress": {
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013"
+        },
+        "phone": {
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "documentName": "Letter of Explanation (LOE) (2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "Phone: 347-324-1888"
+        },
+        "email": {
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "documentName": "Letter of Explanation (LOE) (2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "Email: john.homeowner@test.com"
+        },
+        "employer": {
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "documentName": "EVOE (2023, 2024, 2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "Employer: ABC Technologies"
+        },
+        "jobTitle": {
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "documentName": "EVOE (2023, 2024, 2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "Job Title Sales Manager"
+        },
+        "ssn": {
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "documentName": "W-2 (2024) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "a Employee's SSA number 999-40-5000"
+        },
+        "annualSalary": {
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "documentName": "W-2 (2024) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        "hireDate": {
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "documentName": "EVOE (2023, 2024, 2025) — John Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        }
+      },
+      "phone": "347-324-1888",
+      "email": "john.homeowner@test.com",
+      "employer": "ABC Technologies",
+      "jobTitle": "Sales Manager",
+      "ssn": "XXX-XX-5000",
+      "ssnRaw": "999-40-5000",
+      "annualSalary": 117040.19,
+      "hireDate": "2015-09-23"
+    },
+    {
+      "id": "28f4eb7a-8202-441a-89e9-28b48961bdf4",
+      "role": "co-borrower",
+      "fullName": "Mary Homeowner",
+      "sources": [
+        {
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "documentName": "Underwriting Summary (2026) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        },
+        {
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "documentName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": ""
+        }
+      ],
+      "currentAddress": {
+        "full": "175 13th Street Washington, DC 20013"
+      },
+      "fieldSources": {
+        "currentAddress": {
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "documentName": "Bank Statement (2025) — John & Mary Homeowner",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013"
+        },
+        "ssn": {
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "documentName": "Underwriting Summary (2026) — John & Mary Homeowner",
+          "pageNumber": 2,
+          "exactQuote": "SSN: 500-60-2222"
+        }
+      },
+      "ssn": "XXX-XX-2222",
+      "ssnRaw": "500-60-2222"
+    },
+    {
+      "id": "1abfa573-9369-41c0-ab01-476504c23910",
+      "role": "primary",
+      "fullName": "Robert VanAssen",
+      "sources": [
+        {
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "documentName": "Title Report (2025) — Robert & Andrea VanAssen",
+          "pageNumber": 1,
+          "exactQuote": ""
+        }
+      ]
+    },
+    {
+      "id": "93737e9b-c176-4298-bac0-93bc22a2620b",
+      "role": "co-borrower",
+      "fullName": "Andrea VanAssen",
+      "sources": [
+        {
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "documentName": "Title Report (2025) — Robert & Andrea VanAssen",
+          "pageNumber": 1,
+          "exactQuote": ""
+        }
+      ]
+    }
+  ],
+  "incomeRecords": [
+    {
+      "id": "29a65c6b-862c-4c3c-8873-47a9f8efe902",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "base_salary",
+      "kind": "component",
+      "period": "ytd",
+      "periodEndDate": "2025-04-25",
+      "isJoint": false,
+      "amount": 37800,
+      "description": "Pay Stub Regular YTD",
+      "sourceDoc": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "sourceDocName": "Pay Stub (2025) — John Homeowner",
+      "sourceDocType": "pay_stub",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Regular ... YTD 37,800.00",
+      "annualizedAmount": 119973.91304347827
+    },
+    {
+      "id": "72720a46-58b9-404d-808f-a9694ede12ed",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "commission",
+      "kind": "component",
+      "period": "ytd",
+      "periodEndDate": "2025-04-25",
+      "isJoint": false,
+      "amount": 6300,
+      "description": "Pay Stub Commission YTD",
+      "sourceDoc": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "sourceDocName": "Pay Stub (2025) — John Homeowner",
+      "sourceDocType": "pay_stub",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Commission ... YTD 6,300.00",
+      "annualizedAmount": 19995.652173913044
+    },
+    {
+      "id": "6e7d4485-d23c-4276-a47a-aef79f524ede",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "ytd",
+      "periodEndDate": "2025-04-25",
+      "isJoint": false,
+      "amount": 44100,
+      "description": "Pay Stub Gross Pay YTD",
+      "sourceDoc": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "sourceDocName": "Pay Stub (2025) — John Homeowner",
+      "sourceDocType": "pay_stub",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Gross Pay ... YTD 44,100.00",
+      "annualizedAmount": 139969.5652173913
+    },
+    {
+      "id": "a4a1d733-45ae-4305-afd2-00e1dd332d2d",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2024,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "annual",
+      "periodEndDate": "2024-12-31",
+      "isJoint": false,
+      "amount": 117040.19,
+      "description": "W-2 Box 1 wages 2024",
+      "sourceDoc": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "sourceDocName": "W-2 (2024) — John Homeowner",
+      "sourceDocType": "w2",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "1 Wages, tips, other comp. 117040.19",
+      "annualizedAmount": 117040.19
+    },
+    {
+      "id": "a609c3d5-1303-49de-b370-4e9b2683f212",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 0,
+      "source": "base_salary",
+      "kind": "underwriting_total",
+      "period": "monthly",
+      "isJoint": false,
+      "amount": 9166,
+      "description": "Stable Monthly Income Borrower 1",
+      "sourceDoc": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "sourceDocName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "sourceDocType": "underwriting_summary",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Borrower 1 $ 9,166.00",
+      "annualizedAmount": 109992
+    },
+    {
+      "id": "933c02dd-5ca4-44ca-944f-d81ed679c70e",
+      "borrowerId": "joint",
+      "borrowerName": "Joint",
+      "year": 0,
+      "source": "other_income",
+      "kind": "underwriting_total",
+      "period": "monthly",
+      "isJoint": true,
+      "amount": 1440,
+      "description": "Combined Other Income (all borrowers)",
+      "sourceDoc": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "sourceDocName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "sourceDocType": "underwriting_summary",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Combined Other Income (all borrowers) $ 1,440.00",
+      "annualizedAmount": 17280
+    },
+    {
+      "id": "d607f355-486f-446c-a007-133ad589cf68",
+      "borrowerId": "joint",
+      "borrowerName": "Joint",
+      "year": 0,
+      "source": "base_salary",
+      "kind": "underwriting_total",
+      "period": "monthly",
+      "isJoint": true,
+      "amount": 10606,
+      "description": "Total Borrower Income",
+      "sourceDoc": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "sourceDocName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "sourceDocType": "underwriting_summary",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Total Borrower Income $ 10,606.00",
+      "annualizedAmount": 127272
+    },
+    {
+      "id": "3176a319-4012-435d-b9d7-838f1e896579",
+      "borrowerId": "joint",
+      "borrowerName": "Joint",
+      "year": 2024,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": true,
+      "amount": 143920,
+      "description": "Form 1040 Line 1a W-2 wages (joint)",
+      "sourceDoc": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "sourceDocName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "sourceDocType": "tax_return_1040",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "Total amount from Form(s) W-2, box 1: 143,920",
+      "annualizedAmount": 143920
+    },
+    {
+      "id": "6083d700-fcbe-4131-af6a-828882f43cea",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2024,
+      "source": "self_employment",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 28341,
+      "description": "Schedule C Line 31 net profit 2024",
+      "sourceDoc": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "sourceDocName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "sourceDocType": "tax_return_1040",
+      "sourcePages": [
+        5
+      ],
+      "exactQuote": "Net profit or (loss). Subtract line 30 from line 29: 28,341",
+      "annualizedAmount": 28341
+    },
+    {
+      "id": "7ff142cb-a3bd-4289-9e6d-b8399d232ef2",
+      "borrowerId": "joint",
+      "borrowerName": "Joint",
+      "year": 2023,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": true,
+      "amount": 132643,
+      "description": "Form 1040 Line 1a W-2 wages (joint)",
+      "sourceDoc": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "sourceDocName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "sourceDocType": "tax_return_1040",
+      "sourcePages": [
+        7
+      ],
+      "exactQuote": "Total amount from Form(s) W-2, box 1: 132,643",
+      "annualizedAmount": 132643
+    },
+    {
+      "id": "49956bb7-ee97-43f3-a3c8-5fec929bfa05",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2023,
+      "source": "self_employment",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 29520,
+      "description": "Schedule C Line 31 net profit 2023",
+      "sourceDoc": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "sourceDocName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "sourceDocType": "tax_return_1040",
+      "sourcePages": [
+        11
+      ],
+      "exactQuote": "Net profit or (loss). Subtract line 30 from line 29: 29,520",
+      "annualizedAmount": 29520
+    },
+    {
+      "id": "c23c7ddc-fdc6-4321-8d77-b8cf352b60ac",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "base_salary",
+      "kind": "component",
+      "period": "ytd",
+      "periodEndDate": "2025-05-02",
+      "isJoint": false,
+      "amount": 40501.88,
+      "description": "EVOE Base Salary 2025 YTD",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2025 Base Salary $40,501.88",
+      "annualizedAmount": 121173.65737704917
+    },
+    {
+      "id": "0a2546d9-14c0-4480-9c95-70a66d6ec30d",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "commission",
+      "kind": "component",
+      "period": "ytd",
+      "periodEndDate": "2025-05-02",
+      "isJoint": false,
+      "amount": 6683.48,
+      "description": "EVOE Commissions 2025 YTD",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2025 Commissions $6,683.48",
+      "annualizedAmount": 19995.65737704918
+    },
+    {
+      "id": "4507c5d8-603c-45b6-bf4c-899a795e1fca",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2025,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "ytd",
+      "periodEndDate": "2025-05-02",
+      "isJoint": false,
+      "amount": 47185.36,
+      "description": "EVOE Total 2025 YTD",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2025 Total $47,185.36",
+      "annualizedAmount": 141169.31475409836
+    },
+    {
+      "id": "9d4fb783-d567-48d2-a44b-44c7767ed194",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2024,
+      "source": "base_salary",
+      "kind": "component",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 104500,
+      "description": "EVOE Base Salary 2024",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2024 Base Salary $104,500.00",
+      "annualizedAmount": 104500
+    },
+    {
+      "id": "7235e8bc-a0f4-41ff-b34f-a4c61dcee7cd",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2024,
+      "source": "commission",
+      "kind": "component",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 17290,
+      "description": "EVOE Commissions 2024",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2024 Commissions $17,290.00",
+      "annualizedAmount": 17290
+    },
+    {
+      "id": "fd2e402c-6ec8-47ab-9d06-108a9725679d",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2024,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 121790,
+      "description": "EVOE Total 2024",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2024 Total $121,790.00",
+      "annualizedAmount": 121790
+    },
+    {
+      "id": "3c2e5658-d276-4179-ab25-11dcea1413d6",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2023,
+      "source": "base_salary",
+      "kind": "component",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 96140,
+      "description": "EVOE Base Salary 2023",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2023 Base Salary $96,140.00",
+      "annualizedAmount": 96140
+    },
+    {
+      "id": "016f45e0-b3ed-405f-ab84-e84325d1cf66",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2023,
+      "source": "commission",
+      "kind": "component",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 16562,
+      "description": "EVOE Commissions 2023",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2023 Commissions $16,562.00",
+      "annualizedAmount": 16562
+    },
+    {
+      "id": "463721c9-c1cb-4942-bb8c-9071f479cbd9",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "year": 2023,
+      "source": "base_salary",
+      "kind": "doc_total",
+      "period": "annual",
+      "isJoint": false,
+      "amount": 112702,
+      "description": "EVOE Total 2023",
+      "sourceDoc": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "sourceDocName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "sourceDocType": "evoe",
+      "sourcePages": [
+        1
+      ],
+      "exactQuote": "2023 Total $112,702.00",
+      "annualizedAmount": 112702
+    }
+  ],
+  "accounts": [
+    {
+      "id": "807eb5ff-6dc5-44fe-989d-e1f073ed2ecd",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "institution": "Sandy Springs Credit Union",
+      "accountType": "savings",
+      "accountNumberMasked": "987654321",
+      "balance": 20000,
+      "balanceDate": "2025-04-30",
+      "sourceDoc": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "sourceDocName": "Bank Statement (2025) — John & Mary Homeowner"
+    },
+    {
+      "id": "8f0055fd-c17e-4d3e-a3fc-fb5c240e3daf",
+      "borrowerId": "0f1aaff5-b02e-4c21-9332-4749243a40ed",
+      "borrowerName": "John Homeowner",
+      "institution": "Sandy Springs Credit Union",
+      "accountType": "checking",
+      "accountNumberMasked": "123456789",
+      "balance": 25000,
+      "balanceDate": "2025-04-30",
+      "sourceDoc": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "sourceDocName": "Bank Statement (2025) — John & Mary Homeowner"
+    }
+  ],
+  "documents": [
+    {
+      "id": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fileName": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea-1040_and_Schedule_C__2023_and_2024__-_John_and_Mary_Homeowner_.pdf",
+      "originalName": "1040 and Schedule C (2023 and 2024) - John and Mary Homeowner .pdf",
+      "documentType": "tax_return_1040",
+      "pageCount": 12,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.917Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\9eaa06e7-7882-40be-a04c-8c40ad3a05ea-1040_and_Schedule_C__2023_and_2024__-_John_and_Mary_Homeowner_.pdf",
+      "displayName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "processedAt": "2026-03-10T07:26:41.011Z"
+    },
+    {
+      "id": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "fileName": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7-Checking_-_John_Mary_Homeowner__Current_.pdf",
+      "originalName": "Checking - John Mary Homeowner (Current).pdf",
+      "documentType": "bank_statement",
+      "pageCount": 3,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.918Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7-Checking_-_John_Mary_Homeowner__Current_.pdf",
+      "displayName": "Bank Statement (2025) — John & Mary Homeowner",
+      "processedAt": "2026-03-10T07:26:38.212Z"
+    },
+    {
+      "id": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fileName": "7b85630c-4616-4b0e-854b-e62696651d0e-Closing_Disclosure.pdf",
+      "originalName": "Closing_Disclosure.pdf",
+      "documentType": "closing_disclosure",
+      "pageCount": 2,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.919Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\7b85630c-4616-4b0e-854b-e62696651d0e-Closing_Disclosure.pdf",
+      "displayName": "Closing Disclosure — John Homeowner",
+      "processedAt": "2026-03-10T07:28:16.033Z"
+    },
+    {
+      "id": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fileName": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3-document.pdf",
+      "originalName": "document.pdf",
+      "documentType": "underwriting_summary",
+      "pageCount": 4,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.920Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\be2d0d6e-e30f-4bcf-a4f3-74494445acd3-document.pdf",
+      "displayName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "processedAt": "2026-03-10T07:26:39.986Z"
+    },
+    {
+      "id": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fileName": "a1c522b3-5514-44d2-933d-e9314bbdf98a-EVOE_-_John_Homeowner.pdf",
+      "originalName": "EVOE - John Homeowner.pdf",
+      "documentType": "evoe",
+      "pageCount": 1,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.920Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\a1c522b3-5514-44d2-933d-e9314bbdf98a-EVOE_-_John_Homeowner.pdf",
+      "displayName": "EVOE (2023, 2024, 2025) — John Homeowner",
+      "processedAt": "2026-03-10T07:26:44.373Z"
+    },
+    {
+      "id": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "fileName": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3-Letter_of_Explanation.pdf",
+      "originalName": "Letter_of_Explanation.pdf",
+      "documentType": "other",
+      "pageCount": 1,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.921Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\5afab210-3f8c-4cc2-a12a-3c2cde7191c3-Letter_of_Explanation.pdf",
+      "displayName": "Letter of Explanation (LOE) (2025) — John Homeowner",
+      "processedAt": "2026-03-10T07:26:37.868Z"
+    },
+    {
+      "id": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "fileName": "6714cc82-19c3-4c02-8b26-5c75d4ece31f-Paystub-_John_Homeowner__Current_.pdf",
+      "originalName": "Paystub- John Homeowner (Current).pdf",
+      "documentType": "pay_stub",
+      "pageCount": 1,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.922Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\6714cc82-19c3-4c02-8b26-5c75d4ece31f-Paystub-_John_Homeowner__Current_.pdf",
+      "displayName": "Pay Stub (2025) — John Homeowner",
+      "processedAt": "2026-03-10T07:26:39.234Z"
+    },
+    {
+      "id": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fileName": "8e505081-76d2-4b8c-bf72-cd72d68243ca-Savings_-_John_Mary_Homeowner__Current_.pdf",
+      "originalName": "Savings - John Mary Homeowner (Current).pdf",
+      "documentType": "bank_statement",
+      "pageCount": 2,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.923Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\8e505081-76d2-4b8c-bf72-cd72d68243ca-Savings_-_John_Mary_Homeowner__Current_.pdf",
+      "displayName": "Bank Statement (2025) — John & Mary Homeowner",
+      "processedAt": "2026-03-10T07:26:37.780Z"
+    },
+    {
+      "id": "86f28577-ab30-4625-a492-5a8892640463",
+      "fileName": "86f28577-ab30-4625-a492-5a8892640463-Title_Report.pdf",
+      "originalName": "Title Report.pdf",
+      "documentType": "title_report",
+      "pageCount": 12,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.925Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\86f28577-ab30-4625-a492-5a8892640463-Title_Report.pdf",
+      "displayName": "Title Report (2025) — Robert & Andrea VanAssen",
+      "processedAt": "2026-03-10T07:26:44.327Z"
+    },
+    {
+      "id": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fileName": "b035dc24-31ad-4df4-865d-86b78acfeef9-W2_2024-_John_Homeowner.pdf",
+      "originalName": "W2 2024- John Homeowner.pdf",
+      "documentType": "w2",
+      "pageCount": 1,
+      "status": "completed",
+      "uploadedAt": "2026-03-10T07:26:31.926Z",
+      "filePath": "C:\\Users\\Kahs\\Documents\\code\\stackpoint-takehome\\data\\uploads\\b035dc24-31ad-4df4-865d-86b78acfeef9-W2_2024-_John_Homeowner.pdf",
+      "displayName": "W-2 (2024) — John Homeowner",
+      "processedAt": "2026-03-10T07:26:39.514Z"
+    }
+  ],
+  "extractions": [
+    {
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "documentType": "bank_statement",
+      "pageCount": 2,
+      "documentTitle": "ACCOUNT STATEMENT",
+      "documentYears": [
+        2025
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerAddress": "175 13th Street Washington, DC 20013",
+      "coBorrowerName": "Mary Homeowner",
+      "incomeRecords": [],
+      "accounts": [
+        {
+          "borrowerName": "John Homeowner, Mary Homeowner",
+          "institution": "Sandy Springs Credit Union",
+          "accountType": "savings",
+          "accountNumberMasked": "987654321",
+          "balance": 20000,
+          "balanceDate": "2025-04-30",
+          "pageNumber": 1
+        }
+      ],
+      "closingDate": "2025-04-30",
+      "fields": [
+        {
+          "id": "7ab5ac9d-270e-497f-ad2a-db5cb379eeac",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "acb75c54-09f0-4212-8b9b-e61989b41ea4",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "coBorrowerName",
+          "fieldValue": "Mary Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Mary Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "98bdc7ba-c416-413b-b5f1-fdb023d84427",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013",
+          "category": "borrower"
+        },
+        {
+          "id": "62f594f2-ac60-4799-9dd5-430a4cfc74c4",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "institution",
+          "fieldValue": "Sandy Springs Credit Union",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Sandy Springs Credit Union",
+          "category": "account"
+        },
+        {
+          "id": "b52ee6d2-d799-4bcb-96fb-afa3c7fb3f4d",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "statementPeriodStart",
+          "fieldValue": "2025-04-01",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Statement Period Start: 4/1/2025",
+          "category": "other"
+        },
+        {
+          "id": "af899119-5ae1-49db-a12a-891fa868d65c",
+          "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+          "fieldName": "statementPeriodEnd",
+          "fieldValue": "2025-04-30",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Statement Period End: 4/30/2025",
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "documentType": "other",
+      "pageCount": 1,
+      "documentTitle": "Letter of Explanation (LOE)",
+      "documentYears": [
+        2025
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerPhone": "347-324-1888",
+      "primaryBorrowerEmail": "john.homeowner@test.com",
+      "primaryBorrowerAddress": "175 13th Street, Washington, DC 20013",
+      "incomeRecords": [],
+      "accounts": [],
+      "closingDate": "2025-06-30",
+      "fields": [
+        {
+          "id": "31705312-6a6c-4dc7-a6a9-b94e6942f62f",
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Sincerely, John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "37d8b682-faa2-45ec-a838-a87f22b348b8",
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street, Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street, Washington, DC 20013",
+          "category": "borrower"
+        },
+        {
+          "id": "071897d5-2302-4cb8-b6a2-5c174213f417",
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "fieldName": "primaryBorrowerPhone",
+          "fieldValue": "347-324-1888",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Phone: 347-324-1888",
+          "category": "borrower"
+        },
+        {
+          "id": "64860604-4d9b-4738-8e00-d110a21409d6",
+          "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+          "fieldName": "primaryBorrowerEmail",
+          "fieldValue": "john.homeowner@test.com",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Email: john.homeowner@test.com",
+          "category": "borrower"
+        }
+      ]
+    },
+    {
+      "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "documentType": "bank_statement",
+      "pageCount": 3,
+      "documentTitle": "ACCOUNT STATEMENT",
+      "documentYears": [
+        2025
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerAddress": "175 13th Street Washington, DC 20013",
+      "primaryBorrowerEmployer": "ABC Technologies",
+      "coBorrowerName": "Mary Homeowner",
+      "coBorrowerAddress": "175 13th Street Washington, DC 20013",
+      "incomeRecords": [],
+      "accounts": [
+        {
+          "borrowerName": "John Homeowner, Mary Homeowner",
+          "institution": "Sandy Springs Credit Union",
+          "accountType": "checking",
+          "accountNumberMasked": "123456789",
+          "balance": 25000,
+          "balanceDate": "2025-04-30",
+          "pageNumber": 1
+        }
+      ],
+      "closingDate": "2025-04-30",
+      "lenderName": "Sandy Springs Credit Union",
+      "fields": [
+        {
+          "id": "c489dd4e-a0da-47ba-9745-108e5f2d4bea",
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "25b59def-d2fe-4c22-ac1d-701ecc0be743",
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "fieldName": "coBorrowerName",
+          "fieldValue": "Mary Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Mary Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "28192df9-63e2-4a3e-a334-16ef712ed8dd",
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013",
+          "category": "borrower"
+        },
+        {
+          "id": "817c6298-2f3c-4c0d-a736-5471c3dcd991",
+          "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+          "fieldName": "documentTitle",
+          "fieldValue": "ACCOUNT STATEMENT",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "ACCOUNT STATEMENT",
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "documentType": "pay_stub",
+      "pageCount": 1,
+      "documentTitle": "Earnings Statement",
+      "documentYears": [
+        2025
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerAddress": "175 13th Street Washington, DC 20013",
+      "primaryBorrowerEmployer": "ABC Technologies",
+      "primaryBorrowerJobTitle": "Salary",
+      "incomeRecords": [
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "base_salary",
+          "kind": "component",
+          "period": "ytd",
+          "periodEndDate": "2025-04-25",
+          "isJoint": false,
+          "amount": 37800,
+          "description": "Pay Stub Regular YTD",
+          "pageNumber": 1,
+          "exactQuote": "Regular ... YTD 37,800.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "commission",
+          "kind": "component",
+          "period": "ytd",
+          "periodEndDate": "2025-04-25",
+          "isJoint": false,
+          "amount": 6300,
+          "description": "Pay Stub Commission YTD",
+          "pageNumber": 1,
+          "exactQuote": "Commission ... YTD 6,300.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "ytd",
+          "periodEndDate": "2025-04-25",
+          "isJoint": false,
+          "amount": 44100,
+          "description": "Pay Stub Gross Pay YTD",
+          "pageNumber": 1,
+          "exactQuote": "Gross Pay ... YTD 44,100.00"
+        }
+      ],
+      "accounts": [
+        {
+          "borrowerName": "John Homeowner",
+          "institution": "transit ABA 10200101",
+          "accountType": "other",
+          "accountNumberMasked": "****4456",
+          "balance": 3377.21,
+          "balanceDate": "2025-04-25",
+          "pageNumber": 1
+        }
+      ],
+      "closingDate": "2025-04-25",
+      "fields": [
+        {
+          "id": "9469e5f4-9fce-4de2-a6ae-0010c68beaa0",
+          "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "919b796c-28e4-4b94-b557-1053758e8471",
+          "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013",
+          "category": "borrower"
+        },
+        {
+          "id": "c776b192-2b58-4df9-9057-845458524130",
+          "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+          "fieldName": "primaryBorrowerEmployer",
+          "fieldValue": "ABC Technologies",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "ABC Technologies",
+          "category": "borrower"
+        },
+        {
+          "id": "64df13ae-6ba3-4816-b27b-b21f222d8fcd",
+          "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+          "fieldName": "primaryBorrowerJobTitle",
+          "fieldValue": "Salary",
+          "confidence": "medium",
+          "pageNumber": 1,
+          "exactQuote": "Basis of Pay: Salary",
+          "category": "borrower"
+        }
+      ]
+    },
+    {
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "documentType": "w2",
+      "pageCount": 1,
+      "documentTitle": "Wage and Tax Statement",
+      "documentYears": [
+        2024
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerSSN": "999-40-5000",
+      "primaryBorrowerAddress": "175 13th Street Washington, DC 20013",
+      "primaryBorrowerEmployer": "ABC Technologies",
+      "primaryBorrowerSalary": 117040.19,
+      "incomeRecords": [
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2024,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "annual",
+          "periodEndDate": "2024-12-31",
+          "isJoint": false,
+          "amount": 117040.19,
+          "description": "W-2 Box 1 wages 2024",
+          "pageNumber": 1,
+          "exactQuote": "1 Wages, tips, other comp. 117040.19"
+        }
+      ],
+      "accounts": [],
+      "closingDate": "2024-12-31",
+      "fields": [
+        {
+          "id": "bf1c271d-8f6a-4df4-ac57-7558dcab5d14",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "dcafa1d9-29cb-4f3d-a32c-38303c5bdd23",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "175 13th Street Washington, DC 20013",
+          "category": "borrower"
+        },
+        {
+          "id": "7d951976-4ee1-4459-a79f-b3ee7209a695",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "primaryBorrowerSSN",
+          "fieldValue": "999-40-5000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "a Employee's SSA number 999-40-5000",
+          "category": "borrower"
+        },
+        {
+          "id": "9a1e728d-d9fd-4f5f-a1b4-9504ca48a41c",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "primaryBorrowerEmployer",
+          "fieldValue": "ABC Technologies",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "c. Employer's name, address and ZIP code ABC Technologies",
+          "category": "borrower"
+        },
+        {
+          "id": "8aaa65a6-de05-47d3-aedb-5de7a6fc45c2",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "employerAddress",
+          "fieldValue": "2390 Sunny Drive Louisville, KY 40207",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "2390 Sunny Drive Louisville, KY 40207",
+          "category": "other"
+        },
+        {
+          "id": "2492a82f-052d-4d60-8e33-1fcf1db23262",
+          "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+          "fieldName": "employerFedId",
+          "fieldValue": "11-22233334",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "b Employer's FED ID number 11-22233334",
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "documentType": "underwriting_summary",
+      "pageCount": 4,
+      "documentTitle": "Uniform Underwriting and Transmittal Summary",
+      "documentYears": [
+        2026
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "coBorrowerName": "Mary Homeowner",
+      "coBorrowerSSN": "500-60-2222",
+      "incomeRecords": [
+        {
+          "borrowerName": "John Homeowner",
+          "source": "base_salary",
+          "kind": "underwriting_total",
+          "period": "monthly",
+          "isJoint": false,
+          "amount": 9166,
+          "description": "Stable Monthly Income Borrower 1",
+          "pageNumber": 1,
+          "exactQuote": "Borrower 1 $ 9,166.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "source": "other_income",
+          "kind": "underwriting_total",
+          "period": "monthly",
+          "isJoint": true,
+          "amount": 1440,
+          "description": "Combined Other Income (all borrowers)",
+          "pageNumber": 1,
+          "exactQuote": "Combined Other Income (all borrowers) $ 1,440.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "source": "base_salary",
+          "kind": "underwriting_total",
+          "period": "monthly",
+          "isJoint": true,
+          "amount": 10606,
+          "description": "Total Borrower Income",
+          "pageNumber": 1,
+          "exactQuote": "Total Borrower Income $ 10,606.00"
+        }
+      ],
+      "accounts": [],
+      "loanNumber": "TEST250700114",
+      "loanAmount": 280000,
+      "loanType": "Conventional",
+      "loanPurpose": "Purchase",
+      "propertyAddress": "214 Overlook Drive, Brentwood, TN 37027",
+      "salePrice": 350000,
+      "closingDate": "2026-01-22",
+      "fields": [
+        {
+          "id": "8469c218-8bf8-411f-a1a2-04f6906cb8d4",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Borrower Name John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "e22c3b42-6171-4588-a36a-6dd9d3dee694",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "coBorrowerName",
+          "fieldValue": "Mary Homeowner",
+          "confidence": "high",
+          "pageNumber": 2,
+          "exactQuote": "Co-Borrower: Mary Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "240d1501-3302-48ea-b9f5-21587304c8e3",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "coBorrowerSSN",
+          "fieldValue": "500-60-2222",
+          "confidence": "high",
+          "pageNumber": 2,
+          "exactQuote": "SSN: 500-60-2222",
+          "category": "borrower"
+        },
+        {
+          "id": "00f905b0-ef70-4240-ac83-0d0ccc037fb2",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "propertyAddress",
+          "fieldValue": "214 Overlook Drive, Brentwood, TN 37027",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Property Address 214 Overlook Drive,Brentwood, TN 37027",
+          "category": "property"
+        },
+        {
+          "id": "e491ca1a-3122-4c13-a18e-c2b9089d7b68",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "salePrice",
+          "fieldValue": "350000.00",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Sales Price $ 350,000.00",
+          "category": "loan"
+        },
+        {
+          "id": "242a54ae-9247-44c6-8cf7-f11fbb4cbdd1",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "loanAmount",
+          "fieldValue": "280000.00",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Amount $ 280,000.00",
+          "category": "loan"
+        },
+        {
+          "id": "82765048-2517-40a4-9bba-6f4bb768431b",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "loanNumber",
+          "fieldValue": "TEST250700114",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Seller Loan No. TEST250700114",
+          "category": "loan"
+        },
+        {
+          "id": "688c07e6-69d5-4763-9d9d-fae786f632df",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "loanType",
+          "fieldValue": "Conventional",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Type Conventional",
+          "category": "loan"
+        },
+        {
+          "id": "d71a34f5-ee62-422d-b4f1-4ba7508f4c62",
+          "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+          "fieldName": "loanPurpose",
+          "fieldValue": "Purchase",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Purpose Purchase",
+          "category": "loan"
+        }
+      ]
+    },
+    {
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "documentType": "tax_return_1040",
+      "pageCount": 12,
+      "documentTitle": "U.S. Individual Income Tax Return",
+      "documentYears": [
+        2024,
+        2023
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerSSN": "999-40-5000",
+      "primaryBorrowerAddress": "175 13th Street, Washington, DC 20013",
+      "coBorrowerName": "Mary Homeowner",
+      "coBorrowerSSN": "500-22-2000",
+      "coBorrowerAddress": "175 13th Street, Washington, DC 20013",
+      "incomeRecords": [
+        {
+          "borrowerName": "John and Mary Homeowner",
+          "year": 2024,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": true,
+          "amount": 143920,
+          "description": "Form 1040 Line 1a W-2 wages (joint)",
+          "pageNumber": 1,
+          "exactQuote": "Total amount from Form(s) W-2, box 1: 143,920"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2024,
+          "source": "self_employment",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 28341,
+          "description": "Schedule C Line 31 net profit 2024",
+          "pageNumber": 5,
+          "exactQuote": "Net profit or (loss). Subtract line 30 from line 29: 28,341"
+        },
+        {
+          "borrowerName": "John and Mary Homeowner",
+          "year": 2023,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": true,
+          "amount": 132643,
+          "description": "Form 1040 Line 1a W-2 wages (joint)",
+          "pageNumber": 7,
+          "exactQuote": "Total amount from Form(s) W-2, box 1: 132,643"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2023,
+          "source": "self_employment",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 29520,
+          "description": "Schedule C Line 31 net profit 2023",
+          "pageNumber": 11,
+          "exactQuote": "Net profit or (loss). Subtract line 30 from line 29: 29,520"
+        }
+      ],
+      "accounts": [],
+      "closingDate": "2024-01-31",
+      "fields": [
+        {
+          "id": "27080c32-9e1b-4099-8b49-5326f750dd34",
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Your first name and middle initial: John Last Name: Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "f640f63b-5f42-4af7-a6f4-cd12741a7f58",
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "fieldName": "coBorrowerName",
+          "fieldValue": "Mary Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "If joint return, spouse’s first name and middle initial: Mary Last Name: Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "fa83e4ab-0150-47de-850d-58be6f7be57d",
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "fieldName": "primaryBorrowerSSN",
+          "fieldValue": "999-40-5000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Your social security number: 999 40 5000",
+          "category": "borrower"
+        },
+        {
+          "id": "1fa5ba29-8b6f-4653-89a3-354d0842e22d",
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "fieldName": "coBorrowerSSN",
+          "fieldValue": "500-22-2000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Spouse's social security number: 500 22 2000",
+          "category": "borrower"
+        },
+        {
+          "id": "2fc6432b-4f9d-47e5-a8e5-cb3166f31b09",
+          "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+          "fieldName": "primaryBorrowerAddress",
+          "fieldValue": "175 13th Street, Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Home address: 175 13th Street City, town, or post office: Washington State: DC Zip Code: 20013",
+          "category": "borrower"
+        }
+      ]
+    },
+    {
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "documentType": "title_report",
+      "pageCount": 12,
+      "documentTitle": "ALTA COMMITMENT FOR TITLE INSURANCE",
+      "documentYears": [
+        2025
+      ],
+      "primaryBorrowerName": "Robert VanAssen",
+      "primaryBorrowerAddress": "9591 North Old Mill Way, Citrus Springs, FL 34433",
+      "coBorrowerName": "Andrea VanAssen",
+      "coBorrowerAddress": "9591 North Old Mill Way, Citrus Springs, FL 34433",
+      "incomeRecords": [],
+      "accounts": [],
+      "loanNumber": "2504EM060965",
+      "loanAmount": 232200,
+      "propertyAddress": "9591 North Old Mill Way, Citrus Springs, FL 34433",
+      "salePrice": 258000,
+      "closingDate": "2025-04-16",
+      "lenderName": "Luxury Mortgage Corp.",
+      "fields": [
+        {
+          "id": "63b25ff2-6d5f-46b9-87d0-460a567e62f0",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "documentTitle",
+          "fieldValue": "ALTA COMMITMENT FOR TITLE INSURANCE",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "ALTA COMMITMENT FOR TITLE INSURANCE",
+          "category": "other"
+        },
+        {
+          "id": "f5e1fc27-d1c6-4506-acee-c1ede7d9ba39",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "Robert VanAssen",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Proposed Insured: Robert VanAssen and Andrea VanAssen",
+          "category": "borrower"
+        },
+        {
+          "id": "37f3be73-9d81-4a7b-8de6-f6899c8c824f",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "coBorrowerName",
+          "fieldValue": "Andrea VanAssen",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Proposed Insured: Robert VanAssen and Andrea VanAssen",
+          "category": "borrower"
+        },
+        {
+          "id": "17a31d0b-0a9e-4f11-b039-937982c6ba20",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "propertyAddress",
+          "fieldValue": "9591 North Old Mill Way, Citrus Springs, FL 34433",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Property Address: 9591 North Old Mill Way, Citrus Springs, FL 34433",
+          "category": "property"
+        },
+        {
+          "id": "6e0efb9f-1d08-454d-8245-ec7f18b33c06",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "loanAmount",
+          "fieldValue": "232200.00",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Proposed Amount of Insurance: $232,200.00",
+          "category": "loan"
+        },
+        {
+          "id": "01932eb2-b079-47d9-8d18-26210eb4a810",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "salePrice",
+          "fieldValue": "258000.00",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Proposed Amount of Insurance: $258,000.00",
+          "category": "loan"
+        },
+        {
+          "id": "8b39e2ff-7c19-4658-a094-3bfec2339c6e",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "loanNumber",
+          "fieldValue": "2504EM060965",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Loan ID Number: 2504EM060965",
+          "category": "loan"
+        },
+        {
+          "id": "7f3d96f1-17ef-4a4d-b3d6-e30a74bef331",
+          "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+          "fieldName": "lenderName",
+          "fieldValue": "Luxury Mortgage Corp.",
+          "confidence": "high",
+          "pageNumber": 5,
+          "exactQuote": "Proposed Insured: Luxury Mortgage Corp., ISAOA/ATIMA",
+          "category": "loan"
+        }
+      ]
+    },
+    {
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "documentType": "evoe",
+      "pageCount": 1,
+      "documentTitle": "VERIFICATION SERVICES",
+      "documentYears": [
+        2023,
+        2024,
+        2025
+      ],
+      "primaryBorrowerName": "John Homeowner",
+      "primaryBorrowerSSN": "xxx-xx- 5000",
+      "primaryBorrowerAddress": "2390 Sunny Drive, Louisville, KY 40207",
+      "primaryBorrowerEmployer": "ABC Technologies",
+      "primaryBorrowerJobTitle": "Sales Manager",
+      "primaryBorrowerHireDate": "2015-09-23",
+      "primaryBorrowerSalary": 110000,
+      "coBorrowerAddress": "2390 Sunny Drive, Louisville, KY 40207",
+      "incomeRecords": [
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "base_salary",
+          "kind": "component",
+          "period": "ytd",
+          "periodEndDate": "2025-05-02",
+          "isJoint": false,
+          "amount": 40501.88,
+          "description": "EVOE Base Salary 2025 YTD",
+          "pageNumber": 1,
+          "exactQuote": "2025 Base Salary $40,501.88"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "commission",
+          "kind": "component",
+          "period": "ytd",
+          "periodEndDate": "2025-05-02",
+          "isJoint": false,
+          "amount": 6683.48,
+          "description": "EVOE Commissions 2025 YTD",
+          "pageNumber": 1,
+          "exactQuote": "2025 Commissions $6,683.48"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2025,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "ytd",
+          "periodEndDate": "2025-05-02",
+          "isJoint": false,
+          "amount": 47185.36,
+          "description": "EVOE Total 2025 YTD",
+          "pageNumber": 1,
+          "exactQuote": "2025 Total $47,185.36"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2024,
+          "source": "base_salary",
+          "kind": "component",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 104500,
+          "description": "EVOE Base Salary 2024",
+          "pageNumber": 1,
+          "exactQuote": "2024 Base Salary $104,500.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2024,
+          "source": "commission",
+          "kind": "component",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 17290,
+          "description": "EVOE Commissions 2024",
+          "pageNumber": 1,
+          "exactQuote": "2024 Commissions $17,290.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2024,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 121790,
+          "description": "EVOE Total 2024",
+          "pageNumber": 1,
+          "exactQuote": "2024 Total $121,790.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2023,
+          "source": "base_salary",
+          "kind": "component",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 96140,
+          "description": "EVOE Base Salary 2023",
+          "pageNumber": 1,
+          "exactQuote": "2023 Base Salary $96,140.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2023,
+          "source": "commission",
+          "kind": "component",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 16562,
+          "description": "EVOE Commissions 2023",
+          "pageNumber": 1,
+          "exactQuote": "2023 Commissions $16,562.00"
+        },
+        {
+          "borrowerName": "John Homeowner",
+          "year": 2023,
+          "source": "base_salary",
+          "kind": "doc_total",
+          "period": "annual",
+          "isJoint": false,
+          "amount": 112702,
+          "description": "EVOE Total 2023",
+          "pageNumber": 1,
+          "exactQuote": "2023 Total $112,702.00"
+        }
+      ],
+      "accounts": [],
+      "closingDate": "2025-05-04",
+      "fields": [
+        {
+          "id": "27907006-5806-419f-a040-31a29eba9872",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerName",
+          "fieldValue": "John Homeowner",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "John Homeowner",
+          "category": "borrower"
+        },
+        {
+          "id": "a418de13-9c49-4bc6-b60f-e2238bb8316a",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerSSN",
+          "fieldValue": "xxx-xx- 5000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "xxx-xx- 5000",
+          "category": "borrower"
+        },
+        {
+          "id": "2c065ea7-5090-45ad-96d8-40aa9d214499",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerEmployer",
+          "fieldValue": "ABC Technologies",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Employer: ABC Technologies",
+          "category": "borrower"
+        },
+        {
+          "id": "c616775a-8791-4981-8a34-7882521cb12f",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerJobTitle",
+          "fieldValue": "Sales Manager",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Job Title Sales Manager",
+          "category": "borrower"
+        },
+        {
+          "id": "b76c6c85-1b7f-42ee-b290-d7f77fb9e021",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerHireDate",
+          "fieldValue": "2015-09-23",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Original Hire Date 9/23/2015",
+          "category": "borrower"
+        },
+        {
+          "id": "dac0b8d8-f4e0-4369-a140-410625e15d99",
+          "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+          "fieldName": "primaryBorrowerSalary",
+          "fieldValue": "110000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Employee Rate of Pay: $110,000.00",
+          "category": "income"
+        }
+      ]
+    },
+    {
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "documentType": "closing_disclosure",
+      "pageCount": 2,
+      "primaryBorrowerName": "John Homeowner",
+      "incomeRecords": [],
+      "accounts": [],
+      "loanNumber": "TEST250700110",
+      "loanAmount": 280000,
+      "interestRate": 4,
+      "loanTerm": 30,
+      "loanType": "Conventional",
+      "loanPurpose": "Purchase",
+      "propertyAddress": "999 Test Place, Washington, DC 20013",
+      "salePrice": 350000,
+      "closingDate": "2025-07-25",
+      "lenderName": "XYZ Mortgage Company",
+      "fields": [
+        {
+          "id": "ad5b642c-2368-498b-9db0-040a0b68c8f7",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Closing Date",
+          "fieldValue": "07/25/2025",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Closing Date: 07/25/2025",
+          "category": "loan"
+        },
+        {
+          "id": "309dd66f-c1e3-4505-bcb4-ee569114c371",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Property Address",
+          "fieldValue": "999 Test Place, Washington, DC 20013",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Property: 999 Test Place, Washington, DC 20013",
+          "category": "property"
+        },
+        {
+          "id": "32559951-f12c-4331-87ed-05af4de75499",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Sale Price",
+          "fieldValue": "350000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Sale Price: $350,000",
+          "category": "loan"
+        },
+        {
+          "id": "e62d2e9e-b3d7-41a3-9327-76e088612079",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Loan Amount",
+          "fieldValue": "280000",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Amount $280,000",
+          "category": "loan"
+        },
+        {
+          "id": "d8f62e97-9a4f-44b5-b11f-42b7831b1037",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Interest Rate",
+          "fieldValue": "4.00",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Interest Rate 4.00%",
+          "category": "loan"
+        },
+        {
+          "id": "cf6e8922-8222-4840-8322-2204527c6cea",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Loan Term",
+          "fieldValue": "30",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Term: 30 years",
+          "category": "loan"
+        },
+        {
+          "id": "f148517a-bb37-4217-999e-ebd7cd1f3557",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Loan Purpose",
+          "fieldValue": "Purchase",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Purpose: Purchase",
+          "category": "loan"
+        },
+        {
+          "id": "63f2832b-ed54-431d-8e26-5ea0e2d706d5",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Loan Type",
+          "fieldValue": "Conventional",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan Type: Conventional",
+          "category": "loan"
+        },
+        {
+          "id": "a2645e94-b910-4c4e-894c-5b6feda7c9fa",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Loan ID",
+          "fieldValue": "TEST250700110",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Loan ID #: TEST250700110",
+          "category": "loan"
+        },
+        {
+          "id": "1e6f2178-1032-4357-8339-6df57c4e0ec8",
+          "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+          "fieldName": "Lender Name",
+          "fieldValue": "XYZ Mortgage Company",
+          "confidence": "high",
+          "pageNumber": 1,
+          "exactQuote": "Lender: XYZ Mortgage Company",
+          "category": "loan"
+        }
+      ]
+    }
+  ],
+  "extractedFields": [
+    {
+      "id": "7ab5ac9d-270e-497f-ad2a-db5cb379eeac",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "acb75c54-09f0-4212-8b9b-e61989b41ea4",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "coBorrowerName",
+      "fieldValue": "Mary Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Mary Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "98bdc7ba-c416-413b-b5f1-fdb023d84427",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "175 13th Street Washington, DC 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "62f594f2-ac60-4799-9dd5-430a4cfc74c4",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "institution",
+      "fieldValue": "Sandy Springs Credit Union",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Sandy Springs Credit Union",
+      "category": "account"
+    },
+    {
+      "id": "b52ee6d2-d799-4bcb-96fb-afa3c7fb3f4d",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "statementPeriodStart",
+      "fieldValue": "2025-04-01",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Statement Period Start: 4/1/2025",
+      "category": "other"
+    },
+    {
+      "id": "af899119-5ae1-49db-a12a-891fa868d65c",
+      "documentId": "8e505081-76d2-4b8c-bf72-cd72d68243ca",
+      "fieldName": "statementPeriodEnd",
+      "fieldValue": "2025-04-30",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Statement Period End: 4/30/2025",
+      "category": "other"
+    },
+    {
+      "id": "31705312-6a6c-4dc7-a6a9-b94e6942f62f",
+      "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Sincerely, John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "37d8b682-faa2-45ec-a838-a87f22b348b8",
+      "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street, Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "175 13th Street, Washington, DC 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "071897d5-2302-4cb8-b6a2-5c174213f417",
+      "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "fieldName": "primaryBorrowerPhone",
+      "fieldValue": "347-324-1888",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Phone: 347-324-1888",
+      "category": "borrower"
+    },
+    {
+      "id": "64860604-4d9b-4738-8e00-d110a21409d6",
+      "documentId": "5afab210-3f8c-4cc2-a12a-3c2cde7191c3",
+      "fieldName": "primaryBorrowerEmail",
+      "fieldValue": "john.homeowner@test.com",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Email: john.homeowner@test.com",
+      "category": "borrower"
+    },
+    {
+      "id": "c489dd4e-a0da-47ba-9745-108e5f2d4bea",
+      "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "25b59def-d2fe-4c22-ac1d-701ecc0be743",
+      "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "fieldName": "coBorrowerName",
+      "fieldValue": "Mary Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Mary Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "28192df9-63e2-4a3e-a334-16ef712ed8dd",
+      "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "175 13th Street Washington, DC 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "817c6298-2f3c-4c0d-a736-5471c3dcd991",
+      "documentId": "34c2e422-8c5b-4ddc-91a9-2e0410f8c2b7",
+      "fieldName": "documentTitle",
+      "fieldValue": "ACCOUNT STATEMENT",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "ACCOUNT STATEMENT",
+      "category": "other"
+    },
+    {
+      "id": "9469e5f4-9fce-4de2-a6ae-0010c68beaa0",
+      "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "919b796c-28e4-4b94-b557-1053758e8471",
+      "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "175 13th Street Washington, DC 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "c776b192-2b58-4df9-9057-845458524130",
+      "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "fieldName": "primaryBorrowerEmployer",
+      "fieldValue": "ABC Technologies",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "ABC Technologies",
+      "category": "borrower"
+    },
+    {
+      "id": "64df13ae-6ba3-4816-b27b-b21f222d8fcd",
+      "documentId": "6714cc82-19c3-4c02-8b26-5c75d4ece31f",
+      "fieldName": "primaryBorrowerJobTitle",
+      "fieldValue": "Salary",
+      "confidence": "medium",
+      "pageNumber": 1,
+      "exactQuote": "Basis of Pay: Salary",
+      "category": "borrower"
+    },
+    {
+      "id": "bf1c271d-8f6a-4df4-ac57-7558dcab5d14",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "dcafa1d9-29cb-4f3d-a32c-38303c5bdd23",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "175 13th Street Washington, DC 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "7d951976-4ee1-4459-a79f-b3ee7209a695",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "primaryBorrowerSSN",
+      "fieldValue": "999-40-5000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "a Employee's SSA number 999-40-5000",
+      "category": "borrower"
+    },
+    {
+      "id": "9a1e728d-d9fd-4f5f-a1b4-9504ca48a41c",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "primaryBorrowerEmployer",
+      "fieldValue": "ABC Technologies",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "c. Employer's name, address and ZIP code ABC Technologies",
+      "category": "borrower"
+    },
+    {
+      "id": "8aaa65a6-de05-47d3-aedb-5de7a6fc45c2",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "employerAddress",
+      "fieldValue": "2390 Sunny Drive Louisville, KY 40207",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "2390 Sunny Drive Louisville, KY 40207",
+      "category": "other"
+    },
+    {
+      "id": "2492a82f-052d-4d60-8e33-1fcf1db23262",
+      "documentId": "b035dc24-31ad-4df4-865d-86b78acfeef9",
+      "fieldName": "employerFedId",
+      "fieldValue": "11-22233334",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "b Employer's FED ID number 11-22233334",
+      "category": "other"
+    },
+    {
+      "id": "8469c218-8bf8-411f-a1a2-04f6906cb8d4",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Borrower Name John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "e22c3b42-6171-4588-a36a-6dd9d3dee694",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "coBorrowerName",
+      "fieldValue": "Mary Homeowner",
+      "confidence": "high",
+      "pageNumber": 2,
+      "exactQuote": "Co-Borrower: Mary Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "240d1501-3302-48ea-b9f5-21587304c8e3",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "coBorrowerSSN",
+      "fieldValue": "500-60-2222",
+      "confidence": "high",
+      "pageNumber": 2,
+      "exactQuote": "SSN: 500-60-2222",
+      "category": "borrower"
+    },
+    {
+      "id": "00f905b0-ef70-4240-ac83-0d0ccc037fb2",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "propertyAddress",
+      "fieldValue": "214 Overlook Drive, Brentwood, TN 37027",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Property Address 214 Overlook Drive,Brentwood, TN 37027",
+      "category": "property"
+    },
+    {
+      "id": "e491ca1a-3122-4c13-a18e-c2b9089d7b68",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "salePrice",
+      "fieldValue": "350000.00",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Sales Price $ 350,000.00",
+      "category": "loan"
+    },
+    {
+      "id": "242a54ae-9247-44c6-8cf7-f11fbb4cbdd1",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "loanAmount",
+      "fieldValue": "280000.00",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Amount $ 280,000.00",
+      "category": "loan"
+    },
+    {
+      "id": "82765048-2517-40a4-9bba-6f4bb768431b",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "loanNumber",
+      "fieldValue": "TEST250700114",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Seller Loan No. TEST250700114",
+      "category": "loan"
+    },
+    {
+      "id": "688c07e6-69d5-4763-9d9d-fae786f632df",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "loanType",
+      "fieldValue": "Conventional",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Type Conventional",
+      "category": "loan"
+    },
+    {
+      "id": "d71a34f5-ee62-422d-b4f1-4ba7508f4c62",
+      "documentId": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "fieldName": "loanPurpose",
+      "fieldValue": "Purchase",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Purpose Purchase",
+      "category": "loan"
+    },
+    {
+      "id": "27080c32-9e1b-4099-8b49-5326f750dd34",
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Your first name and middle initial: John Last Name: Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "f640f63b-5f42-4af7-a6f4-cd12741a7f58",
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fieldName": "coBorrowerName",
+      "fieldValue": "Mary Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "If joint return, spouse’s first name and middle initial: Mary Last Name: Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "fa83e4ab-0150-47de-850d-58be6f7be57d",
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fieldName": "primaryBorrowerSSN",
+      "fieldValue": "999-40-5000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Your social security number: 999 40 5000",
+      "category": "borrower"
+    },
+    {
+      "id": "1fa5ba29-8b6f-4653-89a3-354d0842e22d",
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fieldName": "coBorrowerSSN",
+      "fieldValue": "500-22-2000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Spouse's social security number: 500 22 2000",
+      "category": "borrower"
+    },
+    {
+      "id": "2fc6432b-4f9d-47e5-a8e5-cb3166f31b09",
+      "documentId": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "fieldName": "primaryBorrowerAddress",
+      "fieldValue": "175 13th Street, Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Home address: 175 13th Street City, town, or post office: Washington State: DC Zip Code: 20013",
+      "category": "borrower"
+    },
+    {
+      "id": "63b25ff2-6d5f-46b9-87d0-460a567e62f0",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "documentTitle",
+      "fieldValue": "ALTA COMMITMENT FOR TITLE INSURANCE",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "ALTA COMMITMENT FOR TITLE INSURANCE",
+      "category": "other"
+    },
+    {
+      "id": "f5e1fc27-d1c6-4506-acee-c1ede7d9ba39",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "Robert VanAssen",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Proposed Insured: Robert VanAssen and Andrea VanAssen",
+      "category": "borrower"
+    },
+    {
+      "id": "37f3be73-9d81-4a7b-8de6-f6899c8c824f",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "coBorrowerName",
+      "fieldValue": "Andrea VanAssen",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Proposed Insured: Robert VanAssen and Andrea VanAssen",
+      "category": "borrower"
+    },
+    {
+      "id": "17a31d0b-0a9e-4f11-b039-937982c6ba20",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "propertyAddress",
+      "fieldValue": "9591 North Old Mill Way, Citrus Springs, FL 34433",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Property Address: 9591 North Old Mill Way, Citrus Springs, FL 34433",
+      "category": "property"
+    },
+    {
+      "id": "6e0efb9f-1d08-454d-8245-ec7f18b33c06",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "loanAmount",
+      "fieldValue": "232200.00",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Proposed Amount of Insurance: $232,200.00",
+      "category": "loan"
+    },
+    {
+      "id": "01932eb2-b079-47d9-8d18-26210eb4a810",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "salePrice",
+      "fieldValue": "258000.00",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Proposed Amount of Insurance: $258,000.00",
+      "category": "loan"
+    },
+    {
+      "id": "8b39e2ff-7c19-4658-a094-3bfec2339c6e",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "loanNumber",
+      "fieldValue": "2504EM060965",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Loan ID Number: 2504EM060965",
+      "category": "loan"
+    },
+    {
+      "id": "7f3d96f1-17ef-4a4d-b3d6-e30a74bef331",
+      "documentId": "86f28577-ab30-4625-a492-5a8892640463",
+      "fieldName": "lenderName",
+      "fieldValue": "Luxury Mortgage Corp.",
+      "confidence": "high",
+      "pageNumber": 5,
+      "exactQuote": "Proposed Insured: Luxury Mortgage Corp., ISAOA/ATIMA",
+      "category": "loan"
+    },
+    {
+      "id": "27907006-5806-419f-a040-31a29eba9872",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerName",
+      "fieldValue": "John Homeowner",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "John Homeowner",
+      "category": "borrower"
+    },
+    {
+      "id": "a418de13-9c49-4bc6-b60f-e2238bb8316a",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerSSN",
+      "fieldValue": "xxx-xx- 5000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "xxx-xx- 5000",
+      "category": "borrower"
+    },
+    {
+      "id": "2c065ea7-5090-45ad-96d8-40aa9d214499",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerEmployer",
+      "fieldValue": "ABC Technologies",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Employer: ABC Technologies",
+      "category": "borrower"
+    },
+    {
+      "id": "c616775a-8791-4981-8a34-7882521cb12f",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerJobTitle",
+      "fieldValue": "Sales Manager",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Job Title Sales Manager",
+      "category": "borrower"
+    },
+    {
+      "id": "b76c6c85-1b7f-42ee-b290-d7f77fb9e021",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerHireDate",
+      "fieldValue": "2015-09-23",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Original Hire Date 9/23/2015",
+      "category": "borrower"
+    },
+    {
+      "id": "dac0b8d8-f4e0-4369-a140-410625e15d99",
+      "documentId": "a1c522b3-5514-44d2-933d-e9314bbdf98a",
+      "fieldName": "primaryBorrowerSalary",
+      "fieldValue": "110000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Employee Rate of Pay: $110,000.00",
+      "category": "income"
+    },
+    {
+      "id": "ad5b642c-2368-498b-9db0-040a0b68c8f7",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Closing Date",
+      "fieldValue": "07/25/2025",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Closing Date: 07/25/2025",
+      "category": "loan"
+    },
+    {
+      "id": "309dd66f-c1e3-4505-bcb4-ee569114c371",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Property Address",
+      "fieldValue": "999 Test Place, Washington, DC 20013",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Property: 999 Test Place, Washington, DC 20013",
+      "category": "property"
+    },
+    {
+      "id": "32559951-f12c-4331-87ed-05af4de75499",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Sale Price",
+      "fieldValue": "350000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Sale Price: $350,000",
+      "category": "loan"
+    },
+    {
+      "id": "e62d2e9e-b3d7-41a3-9327-76e088612079",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Loan Amount",
+      "fieldValue": "280000",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Amount $280,000",
+      "category": "loan"
+    },
+    {
+      "id": "d8f62e97-9a4f-44b5-b11f-42b7831b1037",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Interest Rate",
+      "fieldValue": "4.00",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Interest Rate 4.00%",
+      "category": "loan"
+    },
+    {
+      "id": "cf6e8922-8222-4840-8322-2204527c6cea",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Loan Term",
+      "fieldValue": "30",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Term: 30 years",
+      "category": "loan"
+    },
+    {
+      "id": "f148517a-bb37-4217-999e-ebd7cd1f3557",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Loan Purpose",
+      "fieldValue": "Purchase",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Purpose: Purchase",
+      "category": "loan"
+    },
+    {
+      "id": "63f2832b-ed54-431d-8e26-5ea0e2d706d5",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Loan Type",
+      "fieldValue": "Conventional",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan Type: Conventional",
+      "category": "loan"
+    },
+    {
+      "id": "a2645e94-b910-4c4e-894c-5b6feda7c9fa",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Loan ID",
+      "fieldValue": "TEST250700110",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Loan ID #: TEST250700110",
+      "category": "loan"
+    },
+    {
+      "id": "1e6f2178-1032-4357-8339-6df57c4e0ec8",
+      "documentId": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "fieldName": "Lender Name",
+      "fieldValue": "XYZ Mortgage Company",
+      "confidence": "high",
+      "pageNumber": 1,
+      "exactQuote": "Lender: XYZ Mortgage Company",
+      "category": "loan"
+    }
+  ],
+  "validationFindings": [
+    {
+      "id": "6986e191-7d76-43f8-9ac6-08ceb131445b",
+      "severity": "error",
+      "category": "ssn_mismatch",
+      "message": "SSN mismatch for Mary Homeowner: different values found in different documents",
+      "field1Doc": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "field1DocName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "field1FileName": "document.pdf",
+      "field1Value": "XXX-XX-2222",
+      "field2Doc": "9eaa06e7-7882-40be-a04c-8c40ad3a05ea",
+      "field2DocName": "Form 1040 (2023, 2024) — John & Mary Homeowner",
+      "field2FileName": "1040 and Schedule C (2023 and 2024) - John and Mary Homeowner .pdf",
+      "field2Value": "XXX-XX-2000"
+    },
+    {
+      "id": "a05b98bc-bd1e-4b76-8fd2-0b9c526fbe23",
+      "severity": "warning",
+      "category": "address_mismatch",
+      "message": "Property address mismatch across documents: Underwriting Summary (2026) — John & Mary Homeowner and Closing Disclosure — John Homeowner list different property addresses.",
+      "field1Doc": "be2d0d6e-e30f-4bcf-a4f3-74494445acd3",
+      "field1DocName": "Underwriting Summary (2026) — John & Mary Homeowner",
+      "field1FileName": "document.pdf",
+      "field1Value": "214 Overlook Drive, Brentwood, TN 37027",
+      "field2Doc": "7b85630c-4616-4b0e-854b-e62696651d0e",
+      "field2DocName": "Closing Disclosure — John Homeowner",
+      "field2FileName": "Closing_Disclosure.pdf",
+      "field2Value": "999 Test Place, Washington, DC 20013"
+    },
+    {
+      "id": "f4c35fd4-5ae3-438c-916d-3c6bb847d073",
+      "severity": "warning",
+      "category": "entity_mismatch",
+      "message": "Title Report references \"Robert VanAssen\" — this party does not match the loan borrowers. This document may belong to a different transaction.",
+      "field1Doc": "86f28577-ab30-4625-a492-5a8892640463",
+      "field1DocName": "Title Report (2025) — Robert & Andrea VanAssen",
+      "field1FileName": "Title Report.pdf",
+      "field1Value": "Robert VanAssen",
+      "field2Value": "John Homeowner, Mary Homeowner"
+    }
+  ],
+  "lastUpdated": "2026-03-10T07:28:16.041Z"
+}

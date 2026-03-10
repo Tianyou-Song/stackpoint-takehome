@@ -236,7 +236,7 @@ export default function BorrowerDetailPage() {
                 confidence={getFieldConfidence("hire date", "start date")}
               />
               <PIIField
-                label="Annual Salary"
+                label="Annual Compensation"
                 value={formatCurrency(borrower.annualSalary)}
                 source={getFieldSource("annualSalary")}
                 confidence={getFieldConfidence("salary", "annual")}

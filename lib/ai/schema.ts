@@ -1,4 +1,4 @@
-// JSON Schema for Gemini responseSchema (not Zod — Gemini needs plain JSON Schema)
+// JSON Schema for structured output (OpenRouter response_format)
 export const EXTRACTION_SCHEMA = {
   type: "object",
   properties: {
@@ -6,9 +6,9 @@ export const EXTRACTION_SCHEMA = {
       type: "string",
       enum: ["tax_return_1040", "w2", "bank_statement", "pay_stub", "closing_disclosure", "underwriting_summary", "title_report", "evoe", "schedule_c", "other", "unknown"],
     },
-    pageCount: { type: "number", nullable: true },
+    pageCount: { type: "integer", nullable: true },
     documentTitle: { type: "string", nullable: true },
-    documentYears: { type: "array", nullable: true, items: { type: "number" } },
+    documentYears: { type: "array", nullable: true, items: { type: "integer" } },
 
     // Primary borrower
     primaryBorrowerName: { type: "string", nullable: true },
@@ -20,7 +20,7 @@ export const EXTRACTION_SCHEMA = {
     primaryBorrowerEmployer: { type: "string", nullable: true },
     primaryBorrowerJobTitle: { type: "string", nullable: true },
     primaryBorrowerHireDate: { type: "string", nullable: true },
-    primaryBorrowerSalary: { type: "number", nullable: true },
+    primaryBorrowerSalary: { type: "string", nullable: true, description: "Annual salary as a number string, e.g. \"75000\" or \"75000.50\"" },
 
     // Co-borrower
     coBorrowerName: { type: "string", nullable: true },
@@ -32,7 +32,7 @@ export const EXTRACTION_SCHEMA = {
     coBorrowerEmployer: { type: "string", nullable: true },
     coBorrowerJobTitle: { type: "string", nullable: true },
     coBorrowerHireDate: { type: "string", nullable: true },
-    coBorrowerSalary: { type: "number", nullable: true },
+    coBorrowerSalary: { type: "string", nullable: true, description: "Annual salary as a number string" },
 
     // Income records
     incomeRecords: {
@@ -42,7 +42,7 @@ export const EXTRACTION_SCHEMA = {
         type: "object",
         properties: {
           borrowerName: { type: "string", nullable: true },
-          year: { type: "number", nullable: true },
+          year: { type: "integer", nullable: true },
           source: {
             type: "string",
             enum: ["base_salary", "overtime", "commission", "bonus", "self_employment", "rental", "other_income"],
@@ -60,9 +60,9 @@ export const EXTRACTION_SCHEMA = {
           },
           periodEndDate: { type: "string", nullable: true },
           isJoint: { type: "boolean", nullable: true },
-          amount: { type: "number", nullable: true },
+          amount: { type: "string", nullable: true, description: "Dollar amount as a number string, e.g. \"50000\" or \"50000.50\"" },
           description: { type: "string", nullable: true },
-          pageNumber: { type: "number", nullable: true },
+          pageNumber: { type: "integer", nullable: true },
           exactQuote: { type: "string", nullable: true },
         },
         required: [],
@@ -84,9 +84,9 @@ export const EXTRACTION_SCHEMA = {
             nullable: true,
           },
           accountNumberMasked: { type: "string", nullable: true },
-          balance: { type: "number", nullable: true },
+          balance: { type: "string", nullable: true, description: "Balance as a number string, e.g. \"25000\" or \"25000.50\"" },
           balanceDate: { type: "string", nullable: true },
-          pageNumber: { type: "number", nullable: true },
+          pageNumber: { type: "integer", nullable: true },
         },
         required: [],
       },
@@ -94,13 +94,13 @@ export const EXTRACTION_SCHEMA = {
 
     // Loan fields
     loanNumber: { type: "string", nullable: true },
-    loanAmount: { type: "number", nullable: true },
-    interestRate: { type: "number", nullable: true },
-    loanTerm: { type: "number", nullable: true },
+    loanAmount: { type: "string", nullable: true, description: "Loan amount as a number string, e.g. \"280000\"" },
+    interestRate: { type: "string", nullable: true, description: "Interest rate as a number string, e.g. \"4.00\"" },
+    loanTerm: { type: "integer", nullable: true },
     loanType: { type: "string", nullable: true },
     loanPurpose: { type: "string", nullable: true },
     propertyAddress: { type: "string", nullable: true },
-    salePrice: { type: "number", nullable: true },
+    salePrice: { type: "string", nullable: true, description: "Sale price as a number string, e.g. \"350000\"" },
     closingDate: { type: "string", nullable: true },
     lenderName: { type: "string", nullable: true },
 
@@ -113,7 +113,7 @@ export const EXTRACTION_SCHEMA = {
           fieldName: { type: "string" },
           fieldValue: { type: "string" },
           confidence: { type: "string", enum: ["high", "medium", "low"] },
-          pageNumber: { type: "number", nullable: true },
+          pageNumber: { type: "integer", nullable: true },
           exactQuote: { type: "string", nullable: true },
           category: {
             type: "string",
@@ -126,3 +126,14 @@ export const EXTRACTION_SCHEMA = {
   },
   required: ["documentType", "fields"],
 };
+
+export function getResponseFormat() {
+  return {
+    type: "json_schema" as const,
+    json_schema: {
+      name: "document_extraction",
+      strict: false,
+      schema: EXTRACTION_SCHEMA,
+    },
+  };
+}

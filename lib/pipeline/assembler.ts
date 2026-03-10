@@ -33,16 +33,29 @@ function normalizeName(name?: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+function isInvalidName(name?: string): boolean {
+  if (!name) return true;
+  const trimmed = name.trim();
+  return !trimmed || /^(null|n\/a|none|unknown)$/i.test(trimmed);
+}
+
 function findOrCreateBorrower(
   borrowers: Borrower[],
   name: string,
   role: Borrower["role"]
-): Borrower {
+): Borrower | null {
+  if (isInvalidName(name)) {
+    console.log(`[assembler] Skipping invalid borrower name: "${name}"`);
+    return null;
+  }
   const norm = normalizeName(name);
   const existing = borrowers.find(
     (b) => normalizeName(b.fullName) === norm || normalizeName(b.fullName)?.includes(norm.split(" ")[0])
   );
-  if (existing) return existing;
+  if (existing) {
+    return existing;
+  }
+  console.log(`[assembler] New borrower: "${name}"`);
   const newBorrower: Borrower = {
     id: uuidv4(),
     role,
@@ -62,6 +75,20 @@ export function assembleFromExtractions(
   incomeRecords: IncomeRecord[];
   accounts: Account[];
 } {
+  // Only these doc types may set loan-level fields (salePrice, loanAmount, etc.)
+  const LOAN_FIELD_DOC_TYPES = new Set([
+    "closing_disclosure", "underwriting_summary", "title_report",
+  ]);
+  // These doc types may NOT set sensitive borrower PII (SSN, DOB, employer, jobTitle, hireDate, salary)
+  const PII_BLOCKED_DOC_TYPES = new Set([
+    "bank_statement", "other", "unknown",
+  ]);
+  // The title report may not set any borrower PII (different parties in this corpus)
+  const BORROWER_PII_BLOCKED_DOC_TYPES = new Set([
+    "title_report",
+  ]);
+
+  console.log(`[assembler] START: ${extractions.length} extractions`);
   const loan: Loan = { sources: [] };
   const borrowers: Borrower[] = [];
   const incomeRecords: IncomeRecord[] = [];
@@ -88,47 +115,62 @@ export function assembleFromExtractions(
       b.fieldSources[field] = makeSourceRef(ref?.page, ref?.quote);
     };
 
+    const blockPII = PII_BLOCKED_DOC_TYPES.has(extraction.documentType) || BORROWER_PII_BLOCKED_DOC_TYPES.has(extraction.documentType);
+    const blockBorrowerAll = BORROWER_PII_BLOCKED_DOC_TYPES.has(extraction.documentType);
+
     // ---- Primary borrower ----
     if (extraction.primaryBorrowerName) {
       const b = findOrCreateBorrower(borrowers, extraction.primaryBorrowerName, "primary");
-      b.fullName = b.fullName || extraction.primaryBorrowerName;
-      if (!b.ssn && extraction.primaryBorrowerSSN) {
-        b.ssn = maskSSN(extraction.primaryBorrowerSSN);
-        setFieldSource(b, "ssn", "ssn", "social security");
-      }
-      if (extraction.primaryBorrowerSSN && !b.ssnRaw) b.ssnRaw = extraction.primaryBorrowerSSN;
-      if (!b.dateOfBirth && extraction.primaryBorrowerDOB) { b.dateOfBirth = extraction.primaryBorrowerDOB; setFieldSource(b, "dateOfBirth", "date of birth", "dob", "birth"); }
-      if (!b.phone && extraction.primaryBorrowerPhone) { b.phone = extraction.primaryBorrowerPhone; setFieldSource(b, "phone", "phone"); }
-      if (!b.email && extraction.primaryBorrowerEmail) { b.email = extraction.primaryBorrowerEmail; setFieldSource(b, "email", "email"); }
-      if (!b.currentAddress && extraction.primaryBorrowerAddress) { b.currentAddress = parseAddress(extraction.primaryBorrowerAddress); setFieldSource(b, "currentAddress", "address"); }
-      if (!b.employer && extraction.primaryBorrowerEmployer) { b.employer = extraction.primaryBorrowerEmployer; setFieldSource(b, "employer", "employer"); }
-      if (!b.jobTitle && extraction.primaryBorrowerJobTitle) { b.jobTitle = extraction.primaryBorrowerJobTitle; setFieldSource(b, "jobTitle", "job title", "position", "occupation"); }
-      if (!b.hireDate && extraction.primaryBorrowerHireDate) { b.hireDate = extraction.primaryBorrowerHireDate; setFieldSource(b, "hireDate", "hire date", "start date"); }
-      if (b.annualSalary == null && extraction.primaryBorrowerSalary != null) { b.annualSalary = extraction.primaryBorrowerSalary; setFieldSource(b, "annualSalary", "salary", "annual"); }
-      if (!b.sources.some((s) => s.documentId === extraction.documentId)) {
-        b.sources.push(makeSourceRef());
+      if (b) {
+        b.fullName = b.fullName || extraction.primaryBorrowerName;
+        if (!blockPII) {
+          if (!b.ssn && extraction.primaryBorrowerSSN) {
+            b.ssn = maskSSN(extraction.primaryBorrowerSSN);
+            setFieldSource(b, "ssn", "ssn", "social security");
+          }
+          if (extraction.primaryBorrowerSSN && !b.ssnRaw) b.ssnRaw = extraction.primaryBorrowerSSN;
+          if (!b.dateOfBirth && extraction.primaryBorrowerDOB) { b.dateOfBirth = extraction.primaryBorrowerDOB; setFieldSource(b, "dateOfBirth", "date of birth", "dob", "birth"); }
+          if (!b.employer && extraction.primaryBorrowerEmployer) { b.employer = extraction.primaryBorrowerEmployer; setFieldSource(b, "employer", "employer"); }
+          if (!b.jobTitle && extraction.primaryBorrowerJobTitle) { b.jobTitle = extraction.primaryBorrowerJobTitle; setFieldSource(b, "jobTitle", "job title", "position", "occupation"); }
+          if (!b.hireDate && extraction.primaryBorrowerHireDate) { b.hireDate = extraction.primaryBorrowerHireDate; setFieldSource(b, "hireDate", "hire date", "start date"); }
+          if (b.annualSalary == null && extraction.primaryBorrowerSalary != null) { b.annualSalary = extraction.primaryBorrowerSalary; setFieldSource(b, "annualSalary", "salary", "annual"); }
+        }
+        if (!blockBorrowerAll) {
+          if (!b.phone && extraction.primaryBorrowerPhone) { b.phone = extraction.primaryBorrowerPhone; setFieldSource(b, "phone", "phone"); }
+          if (!b.email && extraction.primaryBorrowerEmail) { b.email = extraction.primaryBorrowerEmail; setFieldSource(b, "email", "email"); }
+          if (!b.currentAddress && extraction.primaryBorrowerAddress) { b.currentAddress = parseAddress(extraction.primaryBorrowerAddress); setFieldSource(b, "currentAddress", "address"); }
+        }
+        if (!b.sources.some((s) => s.documentId === extraction.documentId)) {
+          b.sources.push(makeSourceRef());
+        }
       }
     }
 
     // ---- Co-borrower ----
     if (extraction.coBorrowerName) {
       const b = findOrCreateBorrower(borrowers, extraction.coBorrowerName, "co-borrower");
-      b.fullName = b.fullName || extraction.coBorrowerName;
-      if (!b.ssn && extraction.coBorrowerSSN) {
-        b.ssn = maskSSN(extraction.coBorrowerSSN);
-        setFieldSource(b, "ssn", "ssn", "social security");
-      }
-      if (extraction.coBorrowerSSN && !b.ssnRaw) b.ssnRaw = extraction.coBorrowerSSN;
-      if (!b.dateOfBirth && extraction.coBorrowerDOB) { b.dateOfBirth = extraction.coBorrowerDOB; setFieldSource(b, "dateOfBirth", "date of birth", "dob", "birth"); }
-      if (!b.phone && extraction.coBorrowerPhone) { b.phone = extraction.coBorrowerPhone; setFieldSource(b, "phone", "phone"); }
-      if (!b.email && extraction.coBorrowerEmail) { b.email = extraction.coBorrowerEmail; setFieldSource(b, "email", "email"); }
-      if (!b.currentAddress && extraction.coBorrowerAddress) { b.currentAddress = parseAddress(extraction.coBorrowerAddress); setFieldSource(b, "currentAddress", "address"); }
-      if (!b.employer && extraction.coBorrowerEmployer) { b.employer = extraction.coBorrowerEmployer; setFieldSource(b, "employer", "employer"); }
-      if (!b.jobTitle && extraction.coBorrowerJobTitle) { b.jobTitle = extraction.coBorrowerJobTitle; setFieldSource(b, "jobTitle", "job title", "position", "occupation"); }
-      if (!b.hireDate && extraction.coBorrowerHireDate) { b.hireDate = extraction.coBorrowerHireDate; setFieldSource(b, "hireDate", "hire date", "start date"); }
-      if (b.annualSalary == null && extraction.coBorrowerSalary != null) { b.annualSalary = extraction.coBorrowerSalary; setFieldSource(b, "annualSalary", "salary", "annual"); }
-      if (!b.sources.some((s) => s.documentId === extraction.documentId)) {
-        b.sources.push(makeSourceRef());
+      if (b) {
+        b.fullName = b.fullName || extraction.coBorrowerName;
+        if (!blockPII) {
+          if (!b.ssn && extraction.coBorrowerSSN) {
+            b.ssn = maskSSN(extraction.coBorrowerSSN);
+            setFieldSource(b, "ssn", "ssn", "social security");
+          }
+          if (extraction.coBorrowerSSN && !b.ssnRaw) b.ssnRaw = extraction.coBorrowerSSN;
+          if (!b.dateOfBirth && extraction.coBorrowerDOB) { b.dateOfBirth = extraction.coBorrowerDOB; setFieldSource(b, "dateOfBirth", "date of birth", "dob", "birth"); }
+          if (!b.employer && extraction.coBorrowerEmployer) { b.employer = extraction.coBorrowerEmployer; setFieldSource(b, "employer", "employer"); }
+          if (!b.jobTitle && extraction.coBorrowerJobTitle) { b.jobTitle = extraction.coBorrowerJobTitle; setFieldSource(b, "jobTitle", "job title", "position", "occupation"); }
+          if (!b.hireDate && extraction.coBorrowerHireDate) { b.hireDate = extraction.coBorrowerHireDate; setFieldSource(b, "hireDate", "hire date", "start date"); }
+          if (b.annualSalary == null && extraction.coBorrowerSalary != null) { b.annualSalary = extraction.coBorrowerSalary; setFieldSource(b, "annualSalary", "salary", "annual"); }
+        }
+        if (!blockBorrowerAll) {
+          if (!b.phone && extraction.coBorrowerPhone) { b.phone = extraction.coBorrowerPhone; setFieldSource(b, "phone", "phone"); }
+          if (!b.email && extraction.coBorrowerEmail) { b.email = extraction.coBorrowerEmail; setFieldSource(b, "email", "email"); }
+          if (!b.currentAddress && extraction.coBorrowerAddress) { b.currentAddress = parseAddress(extraction.coBorrowerAddress); setFieldSource(b, "currentAddress", "address"); }
+        }
+        if (!b.sources.some((s) => s.documentId === extraction.documentId)) {
+          b.sources.push(makeSourceRef());
+        }
       }
     }
 
@@ -163,7 +205,9 @@ export function assembleFromExtractions(
           Math.abs((r.amount ?? 0) - (ir.amount ?? 0)) < 1 &&
           r.sourceDoc === extraction.documentId
       );
+      const borrowerLabel = isJoint ? "Joint" : (borrower?.fullName ?? ir.borrowerName ?? "unknown");
       if (!isDuplicate) {
+        console.log(`[assembler] Income: ${borrowerLabel} ${ir.year ?? 0} ${ir.source ?? "other_income"} $${ir.amount} (${ir.kind ?? "?"}/${ir.period ?? "?"}) from ${extraction.documentType}`);
         incomeRecords.push({
           id: uuidv4(),
           borrowerId: effectiveBorrowerId,
@@ -186,7 +230,10 @@ export function assembleFromExtractions(
     }
     }
 
-    // ---- Accounts ----
+    // ---- Accounts (skip pay stubs — their "accounts" are just direct-deposit routing info) ----
+    if (extraction.documentType === "pay_stub") {
+      // Paystub direct-deposit details are not real bank accounts
+    } else
     for (const acct of extraction.accounts ?? []) {
       const borrower = acct.borrowerName
         ? borrowers.find((b) => normalizeName(b.fullName)?.includes(normalizeName(acct.borrowerName ?? "").split(" ")[0]))
@@ -200,6 +247,7 @@ export function assembleFromExtractions(
           a.institution === acct.institution
       );
       if (!isDuplicate) {
+        console.log(`[assembler] Account: ${acct.institution ?? "unknown"} ${acct.accountType ?? "other"} $${acct.balance ?? "?"} for ${borrower?.fullName ?? acct.borrowerName ?? "unknown"}`);
         accounts.push({
           id: uuidv4(),
           borrowerId: borrower?.id,
@@ -216,23 +264,29 @@ export function assembleFromExtractions(
     }
 
     // ---- Loan ----
-    if (extraction.loanNumber && !loan.loanNumber) {
-      loan.loanNumber = extraction.loanNumber;
-      loan.sources.push(makeSourceRef());
-    }
-    if (extraction.loanAmount && !loan.loanAmount) loan.loanAmount = extraction.loanAmount;
-    if (extraction.interestRate && !loan.interestRate) loan.interestRate = extraction.interestRate;
-    if (extraction.loanTerm && !loan.loanTerm) loan.loanTerm = extraction.loanTerm;
-    if (extraction.loanType && !loan.loanType) loan.loanType = extraction.loanType;
-    if (extraction.loanPurpose && !loan.loanPurpose) loan.loanPurpose = extraction.loanPurpose;
-    if (extraction.propertyAddress && !loan.propertyAddress) {
-      loan.propertyAddress = parseAddress(extraction.propertyAddress);
-    }
-    if (extraction.salePrice && !loan.salePrice) loan.salePrice = extraction.salePrice;
-    if (extraction.closingDate && !loan.closingDate) loan.closingDate = extraction.closingDate;
-    if (extraction.lenderName && !loan.lenderName &&
-        (extraction.documentType === "closing_disclosure" || extraction.documentType === "underwriting_summary")) {
-      loan.lenderName = extraction.lenderName;
+    if (LOAN_FIELD_DOC_TYPES.has(extraction.documentType)) {
+      if (extraction.loanNumber && !loan.loanNumber) {
+        loan.loanNumber = extraction.loanNumber;
+        loan.sources.push(makeSourceRef());
+      }
+      if (extraction.loanAmount && !loan.loanAmount) loan.loanAmount = extraction.loanAmount;
+      if (extraction.interestRate && !loan.interestRate) loan.interestRate = extraction.interestRate;
+      if (extraction.loanTerm && !loan.loanTerm) loan.loanTerm = extraction.loanTerm;
+      if (extraction.loanType && !loan.loanType) loan.loanType = extraction.loanType;
+      if (extraction.loanPurpose && !loan.loanPurpose) loan.loanPurpose = extraction.loanPurpose;
+      if (extraction.propertyAddress && !loan.propertyAddress) {
+        loan.propertyAddress = parseAddress(extraction.propertyAddress);
+      }
+      if (extraction.salePrice && !loan.salePrice) loan.salePrice = extraction.salePrice;
+      // Closing Disclosure is the authoritative source for closing date.
+      // Override any earlier value (e.g. underwriting_summary doc-generation timestamp).
+      if (extraction.closingDate && (!loan.closingDate || extraction.documentType === "closing_disclosure")) {
+        loan.closingDate = extraction.closingDate;
+      }
+      if (extraction.lenderName && !loan.lenderName &&
+          (extraction.documentType === "closing_disclosure" || extraction.documentType === "underwriting_summary")) {
+        loan.lenderName = extraction.lenderName;
+      }
     }
   }
 
@@ -248,22 +302,38 @@ export function assembleFromExtractions(
       pageNumber: page ?? 1,
       exactQuote: quote ?? "",
     });
-    if (extraction.primaryBorrowerName && extraction.primaryBorrowerJobTitle) {
+    if (extraction.primaryBorrowerName && !isInvalidName(extraction.primaryBorrowerName)) {
       const b = borrowers.find((b) => normalizeName(b.fullName) === normalizeName(extraction.primaryBorrowerName!));
       if (b) {
-        b.jobTitle = extraction.primaryBorrowerJobTitle;
         if (!b.fieldSources) b.fieldSources = {};
-        const ref = findFieldRef(extraction, "job title", "position", "occupation", "title");
-        b.fieldSources["jobTitle"] = makeRef2(ref?.page, ref?.quote);
+        if (extraction.primaryBorrowerJobTitle) {
+          b.jobTitle = extraction.primaryBorrowerJobTitle;
+          const ref = findFieldRef(extraction, "job title", "position", "occupation", "title");
+          b.fieldSources["jobTitle"] = makeRef2(ref?.page, ref?.quote);
+        }
+        if (extraction.primaryBorrowerEmployer) {
+          b.employer = extraction.primaryBorrowerEmployer;
+          const ref = findFieldRef(extraction, "employer", "company", "organization");
+          b.fieldSources["employer"] = makeRef2(ref?.page, ref?.quote);
+        }
+        console.log(`[assembler] EVOE override: ${b.fullName} employer=${b.employer} title=${b.jobTitle}`);
       }
     }
-    if (extraction.coBorrowerName && extraction.coBorrowerJobTitle) {
+    if (extraction.coBorrowerName && !isInvalidName(extraction.coBorrowerName)) {
       const b = borrowers.find((b) => normalizeName(b.fullName) === normalizeName(extraction.coBorrowerName!));
       if (b) {
-        b.jobTitle = extraction.coBorrowerJobTitle;
         if (!b.fieldSources) b.fieldSources = {};
-        const ref = findFieldRef(extraction, "job title", "position", "occupation", "title");
-        b.fieldSources["jobTitle"] = makeRef2(ref?.page, ref?.quote);
+        if (extraction.coBorrowerJobTitle) {
+          b.jobTitle = extraction.coBorrowerJobTitle;
+          const ref = findFieldRef(extraction, "job title", "position", "occupation", "title");
+          b.fieldSources["jobTitle"] = makeRef2(ref?.page, ref?.quote);
+        }
+        if (extraction.coBorrowerEmployer) {
+          b.employer = extraction.coBorrowerEmployer;
+          const ref = findFieldRef(extraction, "employer", "company", "organization");
+          b.fieldSources["employer"] = makeRef2(ref?.page, ref?.quote);
+        }
+        console.log(`[assembler] EVOE override: ${b.fullName} employer=${b.employer} title=${b.jobTitle}`);
       }
     }
   }
@@ -335,6 +405,7 @@ export function assembleFromExtractions(
     }
   }
 
+  console.log(`[assembler] DONE — ${borrowers.length} borrowers, ${incomeRecords.length} income records, ${accounts.length} accounts`);
   return { loan, borrowers, incomeRecords, accounts };
 }
 

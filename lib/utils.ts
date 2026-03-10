@@ -89,20 +89,19 @@ export function formatErrorMessage(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
 
   if (msg.includes("429") || msg.includes("RESOURCE_EXHAUSTED") || /quota/i.test(msg)) {
-    return "Rate limit exceeded — the Gemini API quota has been reached. Please wait a moment and retry.";
+    return "Rate limit exceeded — the API quota has been reached. Please wait a moment and retry.";
   }
   if (msg.includes("401") || msg.includes("403") || /api.?key/i.test(msg)) {
-    return "Gemini API key is invalid or unauthorized. Check GOOGLE_API_KEY in .env.local.";
+    return "API key is invalid or unauthorized. Check OPENROUTER_API_KEY in .env.local.";
   }
-  if (msg.includes("400") && /gemini|generative/i.test(msg)) {
-    return "Gemini rejected the request — the document may be too long or contain unsupported content.";
+  if (msg.includes("400")) {
+    return "The API rejected the request — the document may be too long or contain unsupported content.";
   }
-  if (/GoogleGenerativeAI/i.test(msg)) {
+  if (/openrouter|openai/i.test(msg)) {
     const cleaned = msg
-      .replace(/\[GoogleGenerativeAI Error\]:\s*/i, "")
       .replace(/Error fetching from https?:\/\/\S+:\s*/i, "")
       .trim();
-    return `Gemini API error: ${cleaned.slice(0, 300)}`;
+    return `API error: ${cleaned.slice(0, 300)}`;
   }
   return msg.slice(0, 400);
 }

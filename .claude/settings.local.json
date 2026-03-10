@@ -37,7 +37,14 @@
       "mcp__puppeteer__puppeteer_navigate",
       "mcp__puppeteer__puppeteer_screenshot",
       "mcp__puppeteer__puppeteer_evaluate",
-      "mcp__puppeteer__puppeteer_click"
+      "mcp__puppeteer__puppeteer_click",
+      "WebFetch(domain:openrouter.ai)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:cookbook.openai.com)",
+      "WebFetch(domain:developers.openai.com)",
+      "Bash(grep -r \"@google/generative-ai\\\\|pdftotext\\\\|poppler\" C:\\\\Users\\\\Kahs\\\\Documents\\\\code\\\\stackpoint-takehome/package*.json 2>/dev/null || echo \"Not found in package files\")"
     ]
   }
 }
