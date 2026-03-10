@@ -6,8 +6,8 @@ import { UploadZone } from "@/components/upload/upload-zone";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatPercent, formatDate } from "@/lib/utils";
-import type { SSEEvent, SystemState, LoanDocument } from "@/lib/types";
-import { FileText, Users, ShieldAlert, TrendingUp, Loader2, CheckCircle2, XCircle, Clock, Cpu } from "lucide-react";
+import type { SSEEvent, SystemState, LoanDocument, Borrower, IncomeRecord } from "@/lib/types";
+import { FileText, Users, ShieldAlert, TrendingUp, Loader2, CheckCircle2, XCircle, Clock, Cpu, RotateCcw } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_ICON: Record<string, React.ReactNode> = {
@@ -32,9 +32,17 @@ export default function DashboardPage() {
 
   const loan = state.loan;
   const borrowers = state.borrowers ?? [];
+  const incomeRecords = state.incomeRecords ?? [];
   const documents = state.documents ?? [];
   const findings = state.validationFindings ?? [];
   const fields = state.extractedFields ?? [];
+  const unrelatedBorrowerCount = borrowers.filter((b) =>
+    isLikelyUnrelatedBorrower(
+      b,
+      incomeRecords.filter((r) => r.borrowerId === b.id)
+    )
+  ).length;
+  const loanBorrowerCount = Math.max(0, borrowers.length - unrelatedBorrowerCount);
 
   const completed = documents.filter((d) => d.status === "completed").length;
   const inProgress = documents.filter((d) => !["completed", "error"].includes(d.status) && d.status !== "pending").length;
@@ -60,7 +68,16 @@ export default function DashboardPage() {
       {documents.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <StatCard label="Documents" value={`${completed}/${documents.length}`} sub="processed" icon={<FileText className="h-4 w-4 text-blue-500" />} />
-          <StatCard label="Borrowers" value={borrowers.length} sub="identified" icon={<Users className="h-4 w-4 text-purple-500" />} />
+          <StatCard
+            label="Borrowers"
+            value={loanBorrowerCount}
+            sub={
+              unrelatedBorrowerCount > 0
+                ? `${unrelatedBorrowerCount} unrelated ${unrelatedBorrowerCount === 1 ? "entity" : "entities"} flagged`
+                : "loan borrowers identified"
+            }
+            icon={<Users className="h-4 w-4 text-purple-500" />}
+          />
           <StatCard label="Fields" value={fields.length} sub="extracted" icon={<TrendingUp className="h-4 w-4 text-green-500" />} />
           <StatCard label="Issues" value={findings.filter(f => f.severity === "error").length} sub={`${findings.length} total findings`} icon={<ShieldAlert className="h-4 w-4 text-red-500" />} />
         </div>
@@ -200,6 +217,7 @@ function StatCard({ label, value, sub, icon }: { label: string; value: number | 
 }
 
 function DocProgressRow({ doc }: { doc: LoanDocument }) {
+  const [retrying, setRetrying] = useState(false);
   const label: Record<string, string> = {
     pending: "Waiting",
     extracting: "Extracting with Gemini...",
@@ -207,11 +225,32 @@ function DocProgressRow({ doc }: { doc: LoanDocument }) {
     completed: "Done",
     error: "Error",
   };
+
+  const retry = useCallback(async () => {
+    setRetrying(true);
+    try {
+      await fetch(`/api/documents/${doc.id}`, { method: "POST" });
+    } finally {
+      setRetrying(false);
+    }
+  }, [doc.id]);
+
   return (
     <div className="flex items-center gap-3 text-sm">
       {STATUS_ICON[doc.status]}
       <span className="flex-1 truncate text-gray-700">{doc.displayName || doc.originalName}</span>
       <span className="text-xs text-gray-400">{label[doc.status]}</span>
+      {doc.status === "extracting" && (
+        <button
+          onClick={retry}
+          disabled={retrying}
+          className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 disabled:opacity-50 ml-1"
+          title="Retry extraction"
+        >
+          <RotateCcw className={`h-3 w-3 ${retrying ? "animate-spin" : ""}`} />
+          Retry
+        </button>
+      )}
     </div>
   );
 }
@@ -241,4 +280,14 @@ function DocTypeBadge({ type }: { type: string }) {
     unknown: "Unknown",
   };
   return <Badge variant="outline" className="text-[10px]">{labels[type] ?? type}</Badge>;
+}
+
+function isLikelyUnrelatedBorrower(borrower: Borrower, borrowerIncome: IncomeRecord[]): boolean {
+  return (
+    !borrower.ssn &&
+    !borrower.employer &&
+    !borrower.email &&
+    !borrower.phone &&
+    borrowerIncome.length === 0
+  );
 }

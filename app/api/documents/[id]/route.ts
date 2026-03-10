@@ -39,7 +39,7 @@ export async function POST(
   const { id } = await params;
   const doc = store.getDocument(id);
   if (!doc) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (doc.status !== "error") return NextResponse.json({ error: "Document is not in error state" }, { status: 400 });
+  if (!["error", "extracting", "pending"].includes(doc.status)) return NextResponse.json({ error: "Document cannot be retried in its current state" }, { status: 400 });
 
   const retryDoc = { ...doc, status: "pending" as const, errorMessage: undefined };
   store.upsertDocument(retryDoc);

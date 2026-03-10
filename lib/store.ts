@@ -45,7 +45,7 @@ class Store {
         console.log(`[Store] Loaded state from disk: ${this.state.documents.length} docs`);
         // Migrate: reset any stale parsing/parsed status from old pipeline
         for (const doc of this.state.documents) {
-          if ((doc.status as string) === "parsing" || (doc.status as string) === "parsed") {
+          if ((doc.status as string) === "parsing" || (doc.status as string) === "parsed" || doc.status === "extracting") {
             doc.status = "pending";
           }
           delete (doc as unknown as Record<string, unknown>).rawTextPath;

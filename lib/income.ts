@@ -12,6 +12,7 @@ export interface SourceGroup {
   qualifyingAnnual: number;
   qualifyingMonthly: number;
   qualifyingMethod: string; // "2-yr avg" | "most recent year" | "single year"
+  qualifyingMethodDetail: string;
   trend: IncomeTrend;
 }
 
@@ -171,6 +172,51 @@ export function getTrendIndicator(trend: IncomeTrend): { label: string; arrow: s
   }
 }
 
+function formatMoney(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function buildQualifyingMethodDetail(
+  method: string,
+  years: number[],
+  totals: Map<number, number>,
+  qualifyingAnnual: number,
+  twoYearAvgAnnual: number
+): string {
+  if (years.length === 0) {
+    return "No annual totals available from extracted records.";
+  }
+
+  if (method === "single year") {
+    const year = years[years.length - 1];
+    const amount = totals.get(year) ?? 0;
+    return `Only ${year} is available, so qualifying income uses ${formatMoney(amount)} from that year.`;
+  }
+
+  if (method === "most recent year") {
+    const recentYear = years[years.length - 1];
+    const priorYear = years[years.length - 2];
+    const recentTotal = totals.get(recentYear) ?? 0;
+    const priorTotal = totals.get(priorYear) ?? 0;
+    return `Income declined from ${formatMoney(priorTotal)} (${priorYear}) to ${formatMoney(recentTotal)} (${recentYear}), so qualifying income uses the most recent year total.`;
+  }
+
+  if (years.length >= 2) {
+    const y1 = years[years.length - 2];
+    const y2 = years[years.length - 1];
+    const a1 = totals.get(y1) ?? 0;
+    const a2 = totals.get(y2) ?? 0;
+    const prefix = years.length > 2 ? "Using the two most recent years. " : "";
+    return `${prefix}Average of ${y1} and ${y2}: (${formatMoney(a1)} + ${formatMoney(a2)}) / 2 = ${formatMoney(twoYearAvgAnnual)}.`;
+  }
+
+  return `Qualifying annual income is ${formatMoney(qualifyingAnnual)}.`;
+}
+
 // ─── Core logic ──────────────────────────────────────────────────────────────
 
 export function groupIncomeBySource(qualifying: IncomeRecord[], corroborating: IncomeRecord[] = []): Map<IncomeSource, SourceGroup> {
@@ -187,6 +233,7 @@ export function groupIncomeBySource(qualifying: IncomeRecord[], corroborating: I
         qualifyingAnnual: 0,
         qualifyingMonthly: 0,
         qualifyingMethod: "2-yr avg",
+        qualifyingMethodDetail: "",
         trend: "insufficient_data",
       });
     }
@@ -240,6 +287,13 @@ export function groupIncomeBySource(qualifying: IncomeRecord[], corroborating: I
       }
     }
     group.qualifyingMonthly = group.qualifyingAnnual / 12;
+    group.qualifyingMethodDetail = buildQualifyingMethodDetail(
+      group.qualifyingMethod,
+      group.years,
+      group.annualTotals,
+      group.qualifyingAnnual,
+      group.twoYearAvgAnnual
+    );
   }
   return result;
 }

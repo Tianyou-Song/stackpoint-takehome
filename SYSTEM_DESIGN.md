@@ -6,6 +6,8 @@ A web-based pipeline that ingests unstructured mortgage loan PDFs, extracts stru
 
 > **POC scope**: This document describes a proof-of-concept implementation. Architectural choices prioritize speed of iteration and demonstrability over production hardening. See §9 (Scaling) and §10 (Testing Strategy) for what a production system would add.
 
+**Framework choice — Next.js 15**: Next.js was selected because it colocates the React UI and API routes in a single repository and process, eliminating the need for a separate backend service during the POC phase. A single `npm run dev` command starts the full stack (pages, REST endpoints, SSE stream), making the demo immediately runnable by any reviewer. App Router file-based routing reduces boilerplate; TypeScript support is first-class; and the Node.js runtime is well-suited to streaming SSE responses and async pipeline processing.
+
 ---
 
 ## 2. Architecture Diagram
@@ -126,6 +128,9 @@ We use Gemini's `responseSchema` (native JSON schema constraint) rather than pro
 Every extraction returns a `fields[]` array in addition to the top-level named fields. Each entry has `fieldName`, `fieldValue`, `pageNumber`, `exactQuote`, and `confidence`. This powers the source provenance drawer in the UI.
 
 ### Rate limiting & API failure handling
+
+**Free-tier availability caveat**: AI Studio API keys run on shared, best-effort capacity. During demand spikes, Gemini returns `503 Service Unavailable` regardless of the caller's own quota usage — this is a Google-side capacity issue, not a per-key rate limit. For a production deployment, use [Vertex AI](https://cloud.google.com/vertex-ai) with [Provisioned Throughput](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput). No tier within Google AI Studio — free or paid — guarantees uninterrupted access during peak usage; 503s reflect shared infrastructure contention. Vertex AI Provisioned Throughput allocates dedicated model capacity (gen units/sec) to your project, providing a capacity SLA. AI Studio keys (any tier) are suitable for development and demos only.
+
 The POC calls Gemini once per document with no retry logic. In production:
 - Wrap every Gemini call in a queue job (BullMQ) so concurrency to the API is bounded.
 - On 429 (quota exceeded) or 503 (transient failure), apply exponential back-off with jitter and re-enqueue the job — Gemini Flash has per-minute token and request limits that a batch upload can easily hit.

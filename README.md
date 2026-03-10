@@ -50,7 +50,7 @@ Upload PDFs → Save to data/uploads/
 
 | Concern | Choice | Reason |
 |---------|--------|--------|
-| Framework | Next.js 15 (App Router) | Full-stack, API routes, SSR |
+| Framework | Next.js 15 (App Router) | Single repo ships both the React UI and REST/SSE API routes — the fastest way to produce an interactive demo with no separate backend service. App Router file-based routing, React Server Components for fast initial loads, and `npm run dev` brings up everything at once. |
 | LLM | Gemini 3 Flash (preview) | Top ExtractBench score, native PDF input (base64 inlineData), structured JSON via `responseSchema` |
 | Real-time | Server-Sent Events | One-way push, no WebSocket overhead |
 | Storage | In-memory + JSON file | Zero-config for a POC; trivially swappable for Postgres |
@@ -104,6 +104,14 @@ Test coverage was intentionally deferred at this POC stage. Industry practice fo
 - **Title Report**: belongs to Robert/Andrea VanAssen (FL property), not the Homeowner transaction — flagged as entity mismatch
 - **Mary's SSN**: `500-22-2000` on the 1040 vs `500-60-2222` on the underwriting summary — flagged as SSN mismatch error
 - **Income sources**: John has W-2 wages + Schedule C self-employment income across multiple tax years
+
+## API Key Tier & Availability
+
+The `GOOGLE_API_KEY` obtained for free from [AI Studio](https://aistudio.google.com/app/apikey) runs on shared, best-effort infrastructure. During traffic spikes, Gemini returns `503 Service Unavailable` — _"This model is currently experiencing high demand. Spikes in demand are usually temporary."_ This is **not** a per-caller rate limit; it reflects capacity contention on Google's shared infrastructure. No tier within Google AI Studio — free or paid — guarantees uninterrupted access during peak usage.
+
+**Impact on this demo**: Batch-uploading all 10 PDFs simultaneously is likely to trigger 503s on a free key. Use the **Retry** button on failed documents, or upload in smaller batches and wait a few minutes between batches.
+
+**For production**: Use [Vertex AI](https://cloud.google.com/vertex-ai) with [Provisioned Throughput](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput) instead of an AI Studio key. Provisioned Throughput allocates dedicated model capacity (measured in gen units/sec) to your project, removing contention with other callers and providing a capacity SLA. See the rate-limiting section of [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md) for the recommended queue-based retry architecture.
 
 ## Future Directions
 

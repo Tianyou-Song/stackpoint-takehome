@@ -106,7 +106,7 @@ export default function DocumentsPage() {
                     {d.errorMessage && (
                       <p className="text-xs text-red-600 mt-1">{d.errorMessage}</p>
                     )}
-                    {d.status === "error" && (
+                    {(d.status === "error" || d.status === "pending" || d.status === "extracting") && (
                       <Button
                         variant="outline"
                         size="sm"

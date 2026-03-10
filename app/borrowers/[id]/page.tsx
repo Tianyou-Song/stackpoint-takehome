@@ -39,6 +39,26 @@ interface BorrowerData {
   loan: Loan | null;
 }
 
+type IncomeChartRow = {
+  year: number;
+  employment: number;
+  self_employment: number;
+  rental: number;
+  other: number;
+};
+
+const AREA_SERIES: Array<{
+  key: keyof Omit<IncomeChartRow, "year">;
+  stroke: string;
+  fill: string;
+  name: string;
+}> = [
+  { key: "employment", stroke: "#3b82f6", fill: "#bfdbfe", name: "Employment" },
+  { key: "self_employment", stroke: "#8b5cf6", fill: "#ddd6fe", name: "Self-Employment" },
+  { key: "rental", stroke: "#10b981", fill: "#a7f3d0", name: "Rental" },
+  { key: "other", stroke: "#f59e0b", fill: "#fde68a", name: "Other" },
+];
+
 export default function BorrowerDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<BorrowerData | null>(null);
@@ -92,10 +112,15 @@ export default function BorrowerDetailPage() {
   }
 
   const { borrower, incomeRecords, accounts, fields, loan } = data;
+  const hasEmploymentDetails =
+    Boolean(borrower.employer) ||
+    Boolean(borrower.jobTitle) ||
+    Boolean(borrower.hireDate) ||
+    borrower.annualSalary != null;
 
   // Build income chart data: group by year using qualifying categories
   const { qualifying: qualifyingRecords, corroborating: corroboratingRecords } = filterForQualifying(incomeRecords);
-  const yearMap = new Map<number, { year: number; employment: number; self_employment: number; rental: number; other: number }>();
+  const yearMap = new Map<number, IncomeChartRow>();
   for (const r of qualifyingRecords) {
     if (!r.year) continue;
     if (!yearMap.has(r.year)) {
@@ -107,6 +132,7 @@ export default function BorrowerDetailPage() {
     entry[cat] += annualValue;
   }
   const incomeChartData = Array.from(yearMap.values()).sort((a, b) => a.year - b.year);
+  const activeSeries = AREA_SERIES.filter((series) => incomeChartData.some((row) => row[series.key] > 0));
   const incomeBySource = groupIncomeBySource(qualifyingRecords, corroboratingRecords);
 
   const getFieldSource = (fieldKey: string): SourceReference | undefined =>
@@ -186,10 +212,10 @@ export default function BorrowerDetailPage() {
       </Card>
 
       {/* Card 2: Employment */}
-      {(borrower.employer || borrower.jobTitle || borrower.hireDate || borrower.annualSalary != null) && (
-        <Card>
-          <CardHeader><CardTitle>Employment</CardTitle></CardHeader>
-          <CardContent>
+      <Card>
+        <CardHeader><CardTitle>Employment</CardTitle></CardHeader>
+        <CardContent>
+          {hasEmploymentDetails ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <PIIField
                 label="Employer"
@@ -216,9 +242,11 @@ export default function BorrowerDetailPage() {
                 confidence={getFieldConfidence("salary", "annual")}
               />
             </div>
-          </CardContent>
-        </Card>
-      )}
+          ) : (
+            <p className="text-sm text-gray-500">No employment records found for this borrower.</p>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Card 3: Loan Information */}
       {loan && (loan.loanNumber || loan.loanAmount || loan.interestRate || loan.loanType) && (
@@ -249,33 +277,49 @@ export default function BorrowerDetailPage() {
         </Card>
       )}
 
-      {/* Qualifying Income Summary */}
-      {incomeRecords.length > 0 && <QualifyingIncomeSummary groups={incomeBySource} />}
+      {/* Income */}
+      {incomeRecords.length > 0 ? (
+        <>
+          <QualifyingIncomeSummary groups={incomeBySource} />
 
-      {/* Income Chart */}
-      {incomeChartData.length > 0 && (
+          {incomeChartData.length > 0 && (
+            <Card>
+              <CardHeader><CardTitle>Income History</CardTitle></CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={260}>
+                  <AreaChart data={incomeChartData} margin={{ top: 10, right: 20, left: 20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+                    <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 12 }} />
+                    <Tooltip formatter={(v) => formatCurrency(v as number)} />
+                    <Legend />
+                    {activeSeries.map((series) => (
+                      <Area
+                        key={series.key}
+                        type="monotone"
+                        dataKey={series.key}
+                        stackId="1"
+                        stroke={series.stroke}
+                        fill={series.fill}
+                        name={series.name}
+                      />
+                    ))}
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          )}
+
+          <IncomeBySourceSection groups={incomeBySource} />
+        </>
+      ) : (
         <Card>
-          <CardHeader><CardTitle>Income History</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Income</CardTitle></CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={260}>
-              <AreaChart data={incomeChartData} margin={{ top: 10, right: 20, left: 20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(v) => formatCurrency(v as number)} />
-                <Legend />
-                <Area type="monotone" dataKey="employment" stackId="1" stroke="#3b82f6" fill="#bfdbfe" name="Employment" />
-                <Area type="monotone" dataKey="self_employment" stackId="1" stroke="#8b5cf6" fill="#ddd6fe" name="Self-Employment" />
-                <Area type="monotone" dataKey="rental" stackId="1" stroke="#10b981" fill="#a7f3d0" name="Rental" />
-                <Area type="monotone" dataKey="other" stackId="1" stroke="#f59e0b" fill="#fde68a" name="Other" />
-              </AreaChart>
-            </ResponsiveContainer>
+            <p className="text-sm text-gray-500">No income records found for this borrower.</p>
           </CardContent>
         </Card>
       )}
-
-      {/* Income by Source */}
-      {incomeRecords.length > 0 && <IncomeBySourceSection groups={incomeBySource} />}
 
       {/* Assets */}
       {accounts.length > 0 && (

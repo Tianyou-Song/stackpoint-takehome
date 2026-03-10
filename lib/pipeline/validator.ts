@@ -1,6 +1,7 @@
 import type {
   Borrower,
   DocumentExtraction,
+  DocumentType,
   LoanDocument,
   ValidationFinding,
   IncomeRecord,
@@ -151,6 +152,53 @@ export function runValidation(
     }
   }
 
+  // ---- Property address consistency checks ----
+  // Compare non-title documents that explicitly provide a property address.
+  const addressSightings = extractions
+    .filter((e) => e.propertyAddress && e.documentType !== "title_report")
+    .map((e) => {
+      const d = docMap.get(e.documentId);
+      return {
+        docId: e.documentId,
+        docName: d?.displayName ?? d?.originalName ?? e.documentId,
+        fileName: d?.originalName,
+        address: e.propertyAddress ?? "",
+        normalized: normalizeAddress(e.propertyAddress),
+        docType: e.documentType,
+      };
+    })
+    .filter((s) => s.normalized.length > 0);
+
+  if (addressSightings.length >= 2) {
+    const distinctAddresses = new Set(addressSightings.map((s) => s.normalized));
+    if (distinctAddresses.size > 1) {
+      const ranked = [...addressSightings].sort(
+        (a, b) => propertyAddressDocAuthority(a.docType) - propertyAddressDocAuthority(b.docType)
+      );
+      const baseline = ranked[0];
+      const mismatch = ranked.find(
+        (s) => s.docId !== baseline.docId && !addressesCompatible(baseline.normalized, s.normalized)
+      );
+
+      if (baseline && mismatch) {
+        findings.push({
+          id: uuidv4(),
+          severity: "warning",
+          category: "address_mismatch",
+          message: `Property address mismatch across documents: ${baseline.docName} and ${mismatch.docName} list different property addresses.`,
+          field1Doc: baseline.docId,
+          field1DocName: baseline.docName,
+          field1FileName: baseline.fileName,
+          field1Value: baseline.address,
+          field2Doc: mismatch.docId,
+          field2DocName: mismatch.docName,
+          field2FileName: mismatch.fileName,
+          field2Value: mismatch.address,
+        });
+      }
+    }
+  }
+
   // ---- Entity mismatch: Title Report different party ----
   const titleExtractions = extractions.filter((e) => e.documentType === "title_report");
 
@@ -213,4 +261,56 @@ function maskSSN(ssn: string): string {
 
 function normalizeName(name?: string): string {
   return (name ?? "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function propertyAddressDocAuthority(docType: DocumentType): number {
+  switch (docType) {
+    case "underwriting_summary":
+      return 1;
+    case "closing_disclosure":
+      return 2;
+    default:
+      return 3;
+  }
+}
+
+function normalizeAddress(raw?: string): string {
+  if (!raw) return "";
+  let normalized = raw.toLowerCase();
+  const replacements: Array<[RegExp, string]> = [
+    [/\bstreet\b/g, "st"],
+    [/\bavenue\b/g, "ave"],
+    [/\bdrive\b/g, "dr"],
+    [/\broad\b/g, "rd"],
+    [/\bboulevard\b/g, "blvd"],
+    [/\bplace\b/g, "pl"],
+    [/\bcourt\b/g, "ct"],
+    [/\blane\b/g, "ln"],
+    [/\bterrace\b/g, "ter"],
+    [/\bapartment\b/g, "apt"],
+    [/\bsuite\b/g, "ste"],
+  ];
+  for (const [pattern, replacement] of replacements) {
+    normalized = normalized.replace(pattern, replacement);
+  }
+  return normalized
+    .replace(/[.,#]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function addressesCompatible(a: string, b: string): boolean {
+  if (!a || !b) return true;
+  if (a === b) return true;
+  if (a.includes(b) || b.includes(a)) return true;
+
+  const aTokens = new Set(a.split(" "));
+  const bTokens = new Set(b.split(" "));
+  let overlap = 0;
+  for (const token of aTokens) {
+    if (bTokens.has(token)) overlap += 1;
+  }
+  const smallerSize = Math.min(aTokens.size, bTokens.size);
+  if (smallerSize === 0) return false;
+  return overlap / smallerSize >= 0.8;
 }

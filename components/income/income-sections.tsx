@@ -73,8 +73,18 @@ export function QualifyingIncomeSummary({ groups }: { groups: Map<IncomeSource, 
                     </span>
                   </td>
                   <td className="px-6 py-3 text-right text-gray-900">
-                    {formatCurrency(g.qualifyingAnnual)}
-                    <span className="text-xs text-gray-400 ml-1">({g.qualifyingMethod})</span>
+                    <div className="text-right">
+                      <p>
+                        {formatCurrency(g.qualifyingAnnual)}
+                        <span
+                          className="text-xs text-gray-400 ml-1"
+                          title={g.qualifyingMethodDetail}
+                        >
+                          ({g.qualifyingMethod})
+                        </span>
+                      </p>
+                      <p className="text-[11px] text-gray-500 mt-0.5">{g.qualifyingMethodDetail}</p>
+                    </div>
                   </td>
                   <td className="px-6 py-3 text-right font-medium text-gray-900">{formatCurrency(g.qualifyingMonthly)}</td>
                 </tr>
@@ -153,10 +163,7 @@ export function SourceGroupCard({ group }: { group: SourceGroup }) {
   const colors = SOURCE_COLORS[group.source];
   const descRows = buildDescriptionRows(group);
   const ti = getTrendIndicator(group.trend);
-  const isDeclining = group.trend === "declining";
-  const methodLabel = isDeclining
-    ? `most recent year: ${formatCurrency(group.qualifyingAnnual)}/yr`
-    : `2-yr avg: ${formatCurrency(group.twoYearAvgAnnual)}/yr`;
+  const methodLabel = `${group.qualifyingMethod}: ${formatCurrency(group.qualifyingAnnual)}/yr`;
 
   return (
     <Card className="overflow-hidden">
@@ -175,20 +182,26 @@ export function SourceGroupCard({ group }: { group: SourceGroup }) {
           <span className={`text-sm font-semibold ${colors.accent}`}>
             Qualifying: {formatCurrency(group.qualifyingMonthly)}/mo
           </span>
-          <span className="text-xs text-gray-500">({methodLabel})</span>
+          <span className="text-xs text-gray-500" title={group.qualifyingMethodDetail}>
+            ({methodLabel})
+          </span>
         </div>
         {collapsed ? <ChevronDown className="h-4 w-4 text-gray-500" /> : <ChevronUp className="h-4 w-4 text-gray-500" />}
       </button>
       {!collapsed && (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div>
+          <div className="px-6 py-2.5 bg-gray-50 border-b border-gray-100 text-xs text-gray-600">
+            {group.qualifyingMethodDetail}
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
                 <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Description</th>
                 {group.years.map((y) => (
                   <th key={y} className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">{y}</th>
                 ))}
-                <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">2-Yr Avg</th>
+                <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Avg (Latest 2 Yrs)</th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 uppercase">Monthly</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Doc</th>
                 <th className="px-4 py-3"></th>
@@ -238,7 +251,8 @@ export function SourceGroupCard({ group }: { group: SourceGroup }) {
               </tr>
               <CorroboratingRows records={group.corroboratingRecords} years={group.years} />
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       )}
     </Card>

@@ -42,6 +42,8 @@ export default function BorrowersPage() {
             const borrowerIncome = incomeRecords.filter((r) => r.borrowerId === b.id);
             const borrowerAccounts = accounts.filter((a) => a.borrowerId === b.id);
             const qualifyingMonthly = computeQualifyingMonthly(borrowerIncome);
+            const hasEmploymentDetails =
+              Boolean(b.employer) || Boolean(b.jobTitle) || b.annualSalary != null;
             // Flag borrowers with no PII and no income — likely from an unrelated document (e.g. title report)
             const isUnrelated = !b.ssn && !b.employer && !b.email && !b.phone && borrowerIncome.length === 0;
             return (
@@ -72,15 +74,20 @@ export default function BorrowersPage() {
                         {b.phone && <Row label="Phone" value={b.phone} />}
                         {b.email && <Row label="Email" value={b.email} />}
                         {b.currentAddress?.full && <Row label="Address" value={b.currentAddress.full} />}
+                        {!hasEmploymentDetails && (
+                          <p className="text-xs text-gray-500">Employment: No employment records found.</p>
+                        )}
                       </>
                     )}
                     {/* Summary metrics */}
                     <div className="pt-2 mt-2 border-t border-gray-100 flex gap-4">
-                      {qualifyingMonthly > 0 && (
+                      {qualifyingMonthly > 0 ? (
                         <div>
                           <p className="text-[10px] text-gray-400 uppercase">Qualifying Income</p>
                           <p className="text-sm font-semibold text-gray-900">{formatCurrency(qualifyingMonthly)}/mo</p>
                         </div>
+                      ) : (
+                        <p className="text-xs text-gray-500">No qualifying income records found.</p>
                       )}
                       {borrowerAccounts.length > 0 && (
                         <div>
